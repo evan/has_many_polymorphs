@@ -1,0 +1,79 @@
+
+v27.5. various bugfixes; postgresql problems remain on edge
+
+v27.3. use new :source and :source_type options in 1.2.3 (David Lemstra); fix pluralization bug; add some tests; experimental tagging generator
+
+v27.2. deprecate has_many_polymorphs_cache_classes= option, because it doesn't really work. use config.cache_classes= instead to cache all reloadable items
+
+v27.1. dispatcher.to_prepare didn't fire in the console; now using a config.after_initialize wrapper instead
+
+v27. dependency injection framework elimates having to care about load order
+
+v26. make the logger act sane for the gem version
+
+v25.2. allow :skip_duplicates on double relationships
+
+v25.1. renamed :ignore_duplicates to :skip_duplicates to better express its non-passive behavior, made sure not to load target set on push unless necessary
+
+v25. activerecord compatibility branch becomes trunk. extra options now supported for double polymorphism; conditions nulled-out and propogated to child relationships; more tests; new :ignore_duplicates option on macro can be set to false if you want << to try to push duplicate associations
+
+v24.1. code split into multiple files. tests added for pluralization check. rails 1.1.6 no longer officially supported.
+
+v24. unlimited mixed class association extensions for both single and double targets and joins
+
+v23. gem version
+
+v22. api change; prefix on methods is now singular when using :rename_individual_collections
+
+v21. add configuration option to cache polymorphic classes in development mode
+
+v20. collection methods (push, delete, clear) now on individual collections
+
+v19.2. disjoint collection sides bugfix, don't raise on new records
+
+v19.1. double classify bugfix
+
+v19. large changes to properly support double polymorphism
+
+v18.2. bugfix to make sure the type gets checked on doubly polymorphic parents
+
+v18.1. bugfix for sqlite3 child attribute retrieval
+
+v18. bugfix for instantiating attributes of namespaced models
+
+v17.1. bugfix for double polymorphic relationships
+
+v17. double polymorphic relationships (includes new API method)
+
+v16. namespaced model support
+
+v15. bugfix for postgres and mysql under 1.1.6; refactored tests (thanks hildofur); properly handles legacy table names set with set_table_name()
+
+v14. sti support added (use the child class names, not the base class)
+
+v13. bug regarding table names with underscores in SQL query fixed
+
+v12.1. license change
+
+v12. file_column bug fixed
+
+v11. tests written; after_find and after_initialize now correctly called
+
+v10. bugfix
+
+v9. rollback
+
+v8. SQL performance enhancements added
+
+v7. rewrote singletons as full-fledged proxy class so that marshalling works (e.g. in the session)
+
+v6. caching added
+
+v5. fixed dependency reloading problem in development mode
+
+v4. license change
+
+v3. added :dependent support on the join table
+
+v2. no changelog
+
