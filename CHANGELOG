@@ -1,4 +1,6 @@
 
+v28. rdoc documentation, repository relocation, rakefile cleanup
+
 v27.5. various bugfixes; postgresql problems remain on edge
 
 v27.3. use new :source and :source_type options in 1.2.3 (David Lemstra); fix pluralization bug; add some tests; experimental tagging generator
