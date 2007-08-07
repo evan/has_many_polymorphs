@@ -22,7 +22,7 @@ This plugin lets you define self-referential and double-sided polymorphic associ
 * namespace support
 * automatic individual and reverse associations
 
-And a generator for a tagging system, a common use case.
+The plugin also includes a generator for a tagging system, a common use case.
 
 == Requirements
 
