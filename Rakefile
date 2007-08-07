@@ -10,3 +10,9 @@ Echoe.new("has_many_polymorphs") do |p|
   p.extra_deps = ["activerecord"]
   p.rdoc_pattern = /polymorphs\/association|polymorphs\/class_methods|polymorphs\/reflection|README|CHANGELOG|LICENSE/    
 end
+
+desc 'Run the test suite.'
+Rake::Task.redefine_task("test") do
+   puts "Notice; tests must be run from within a functioning Rails environment."
+   system "ruby -Ibin:lib:test test/unit/polymorph_test.rb #{ENV['METHOD'] ? "--name=#{ENV['METHOD']}" : ""}"
+end
