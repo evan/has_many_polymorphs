@@ -275,7 +275,6 @@ If you pass a block, it gets converted to a Proc and added to <tt>:extend</tt>.
         # create the reflection object      
         returning(create_reflection(:has_many_polymorphs, association_id, options, self)) do |reflection|
           if defined? Dependencies and RAILS_ENV == "development"                    
-            _logger_warn "DEPRECATION WARNING: \"has_many_polymorphs_cache_classes =\" no longer has any effect. Please use \"config.cache_classes = true\" in the regular environment config (not in the \"after_initialize\" block)." if ActiveRecord::Associations::ClassMethods.has_many_polymorphs_cache_classes          
             inject_dependencies(association_id, reflection) if Dependencies.mechanism == :load
           end
           
