@@ -49,7 +49,7 @@ generators/tagging/templates/tag.rb
 generators/tagging/templates/migration.rb
 generators/tagging/templates/index.rhtml
 generators/tagging/tagging_generator.rb
-TAGGING_INSTALL
+TODO
 Rakefile
 README
 Manifest
