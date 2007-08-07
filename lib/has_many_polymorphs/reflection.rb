@@ -33,7 +33,7 @@ Inherits from ActiveRecord::Reflection::AssociationReflection.
 =end
 
     class PolymorphicReflection < AssociationReflection
-      # Stub out the validity check. <tt>has_many_polymorphs</tt> checks validity on macro creation, not on reflection.
+      # Stub out the validity check. Has_many_polymorphs checks validity on macro creation, not on reflection.
       def check_validity! 
         # nothing
       end                 

@@ -32,9 +32,13 @@ And a generator for a tagging system, a common use case.
 
 == Installation
 
+To install the Rails plugin, run:
   script/plugin install svn://rubyforge.org/var/svn/polymorphs/has_many_polymorphs
 
-(There's also a gem version. Run: <tt>sudo gem install has_many_polymorphs</tt>. Also make sure to add <tt>require 'has_many_polymorphs'</tt> to <tt>environment.rb</tt>, before Rails::Initializer block.)
+There's also a gem version. To install it instead, run: 
+  sudo gem install has_many_polymorphs
+  
+If you are using the gem, make sure to add <tt>require 'has_many_polymorphs'</tt> to <tt>environment.rb</tt>, before Rails::Initializer block.
 
 == Configuration
 
@@ -99,6 +103,16 @@ Now, dogs and cats can eat birds and cats. Birds can't eat anything (they aren't
 In this case, each eater/eaten relationship is called a Devouring.
 
 See ActiveRecord::Associations::PolymorphicClassMethods for more.
+
+== Tagging generator
+
+Has_many_polymorphs includes a tagging system generator.
+
+  ./script/generate tagging TaggableModel1 TaggableModel2 [..]
+
+You can use the flag <tt>--skip-migration</tt> (to avoid generating a migration, for example, if you are converting from <tt>acts_as_taggable)</tt>, as well as the flag <tt>--self-referential</tt> (if you want tags to be able to tag tags).
+
+Tests will be generated, but will not work unless you have at least 2 fixture entries for the first two taggable models. Their ids must be 1 and 2.
 
 == Troubleshooting
 

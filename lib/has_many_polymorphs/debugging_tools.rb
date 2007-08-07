@@ -1,7 +1,7 @@
 
 =begin rdoc
 
-Debugging tools for <tt>has_many_polymorphs</tt>. 
+Debugging tools for Has_many_polymorphs. 
 
 Enable the different tools by setting the environment variable HMP_DEBUG. Settings with special meaning are <tt>"ruby-debug"</tt>, <tt>"trace"</tt>, and <tt>"dependencies"</tt>.
 

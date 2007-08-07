@@ -157,6 +157,8 @@ This method createds a single-sided polymorphic relationship.
 
 The only required parameter, aside from the association name, is <tt>:from</tt>. 
 
+The method generates a number of associations aside from the polymorphic one. In this example Petfood also gets <tt>dogs</tt>, <tt>cats</tt>, and <tt>birds</tt>, and Dog, Cat, and Bird get <tt>petfoods</tt>. (The reverse association to the parent is always plural.)
+
 == Available options
 
 <tt>:from</tt>:: An array of symbols representing the target classes. Required.
