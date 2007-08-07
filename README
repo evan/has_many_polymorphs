@@ -125,4 +125,4 @@ Note that because of the way Rails reloads model classes, the plugin can sometim
 == Further resources
 
 * http://blog.evanweaver.com/pages/code#polymorphs
-* http://rubyforge.org/forum/forum.php?forum_id=8117
+* http://rubyforge.org/forum/forum.php?forum_id=16450
