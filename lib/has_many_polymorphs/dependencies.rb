@@ -1,11 +1,16 @@
 
-module Dependencies
-  
-  #### dependency injection
+=begin rdoc
+Adds a minimal dependency injection framework so that owners of polymorphic relationships reload after their children, reinjecting the child helper methods.
 
+Overrides Dependencies#<tt>new_constants_in</tt>.
+=end
+
+module Dependencies
+    
   mattr_accessor :injection_graph
   self.injection_graph = Hash.new([])
 
+  # Add a dependency for this target.
   def inject_dependency(target, *requirements)
     target, requirements = target.to_s, requirements.map(&:to_s)    
     injection_graph[target] = ((injection_graph[target] + requirements).uniq - [target])
@@ -13,6 +18,7 @@ module Dependencies
 #    _logger_debug "has_many_polymorphs: injection graph: #{injection_graph.inspect}"
   end
 
+  # Make sure any dependent constants of the constants added by <tt>yield</tt> are reloaded.
   def new_constants_in_with_injection(*descs, &block) # chain
 #    _logger_debug "has_many_polymorphs: NEW: autoloaded constants: #{autoloaded_constants.inspect}; #{explicitly_unloadable_constants.inspect}" if (autoloaded_constants + explicitly_unloadable_constants).any?
     returning(new_constants_in_without_injection(*descs, &block)) do |found|

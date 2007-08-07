@@ -1,4 +1,35 @@
 
+=begin rdoc
+
+Debugging tools for <tt>has_many_polymorphs</tt>. 
+
+Enable the different tools by setting the environment variable HMP_DEBUG. Settings with special meaning are <tt>"ruby-debug"</tt>, <tt>"trace"</tt>, and <tt>"dependencies"</tt>.
+
+== Code generation
+
+Enabled by default when HMP_DEBUG is set.
+
+Ouputs a folder <tt>generated_models/</tt> in RAILS_ROOT containing valid Ruby files explaining all the ActiveRecord relationships set up by the plugin, as well as listing the line in the plugin that called each particular association method.
+
+== Ruby-debug
+
+Enable by setting HMP_DEBUG to <tt>"ruby-debug"</tt>.
+
+Starts <tt>ruby-debug</tt> for the life of the process.
+
+== Trace
+
+Enable by setting HMP_DEBUG to <tt>"ruby-debug"</tt>.
+
+Outputs an indented trace of relevant method calls as they occur.
+
+== Dependencies
+
+Enable by setting HMP_DEBUG to <tt>"dependencies"</tt>.
+
+Turns on Rails' default dependency logging.
+
+=end
 
 class << ActiveRecord::Base
   COLLECTION_METHODS = [:belongs_to, :has_many, :has_and_belongs_to_many, :has_one, 
@@ -8,10 +39,6 @@ class << ActiveRecord::Base
   end      
 
   unless defined? GENERATED_CODE_DIR
-    # automatic code generation for debugging
-    # you will get a folder "generated_models" in RAILS_ROOT containing valid Ruby files
-    # explaining all ActiveRecord relationships set up by the plugin, as well as listing the 
-    # line in the plugin that made each particular macro call
     GENERATED_CODE_DIR = "#{RAILS_ROOT}/generated_models"
   
     begin
@@ -34,7 +61,7 @@ class << ActiveRecord::Base
               file.puts contents             
             end
           end
-          # doesn't handle blocks cause we can't introspect on code like that in Ruby without hackery and dependencies
+          # doesn't actually display block contents
           self.send("original_#{method_name}", *args, &block)
         else
           self.send(:original_method_missing, method_name, *args, &block)
@@ -45,15 +72,16 @@ class << ActiveRecord::Base
   end
 end
 
-# and have a debugger enabled
-case ENV['DEBUG']
+case ENV['HMP_DEBUG']
+
   when "ruby-debug"
     require 'rubygems'
     require 'ruby-debug'
     Debugger.start
-    puts "Notice; ruby-debug enabled."
+    _logger_warn "ruby-debug enabled."
+
   when "trace"
-    puts "Notice; method tracing enabled"  
+    _logger_warn "method tracing enabled"  
     $debug_trace_indent = 0
     set_trace_func (proc do |event, file, line, id, binding, classname|
       if id.to_s =~ /instantiate/ #/IRB|Wirble|RubyLex|RubyToken|Logger|ConnectionAdapters|SQLite3|MonitorMixin|Benchmark|Inflector|Inflections/ 
@@ -66,7 +94,8 @@ case ENV['DEBUG']
         end
       end
     end)
+    
   when "dependencies"
-    puts "Notice; dependency activity being logged"
+    _logger_warn "dependency activity being logged"
     (::Dependencies.log_activity = true) rescue nil
 end

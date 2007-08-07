@@ -1,5 +1,7 @@
 
+# Redefine instead of chain a Rake task
 # http://www.bigbold.com/snippets/posts/show/2032
+
 module Rake
   module TaskManager
     def redefine_task(task_class, args, &block)

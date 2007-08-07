@@ -1,188 +1,114 @@
 
 has_many_polymorphs
 
-Ruby on Rails plugin for defining self-referential polymorphic associations.
+An ActiveRecord plugin for defining self-referential polymorphic associations.
 
 == License
 
-== Requirements
-
 Copyright 2007 Cloudburst, LLC. Licensed under the AFL 3. See the included LICENSE file. 
 
-introduction
+== Description
 
-This plugin for ActiveRecord gives you the ability to define easy-to-use self-referential polymorphic associations with full array-like behavior (.push, .delete, <<) in your models. The plugin is an extension of has_many :through.
+This plugin gives you the ability to define easy-to-use self-referential polymorphic associations with full array-like behavior in your models. It is an extension of <tt>has_many :through</tt>.
 
-“Polymorphic” means an association can freely point to any of several disparate model classes, instead of being tied to one particular class.
-quickstart
+“Polymorphic” means an association can freely point to any of several unrelated model classes, instead of being tied to one particular class.
 
-class Tag < ActiveRecord::Base
-  has_many_polymorphs :tagged_things, 
-    :from => [:articles, :songs, :photos]
-end
+== Features
 
-If you have ever tried to define polymorphic associations on your own with has_many :through, you will realize what a huge difference this makes.
-latest version
+* self-references
+* double-sided polymorphism
+* efficient, merged association SELECT
+* STI support
+* namespace support
+* automatic individual and reverse associations
 
-The latest version is 27.5, released on June 15, 2007. It fixes bugs with STI, table-name prefixes, Oracle, and some other things.
+And a generator for a tagging system, a common use case.
 
-Rails 1.2.3 or greater is required.
+== Requirements
 
-Features:
+* Rails 1.2.3 or greater
 
-    * complete polymorphism
-    * auto-injected child relationships from the perspective of both the parent and the children
-    * :dependent option on the join table
-    * self-references
-    * support for STI child classes
-    * support for namespaced models
-    * ability to rename foreign keys and prevent association name collisions
-    * support for double polymorphic collections specified on the join model
-    * .push, <<, .delete, and clear methods on all individual and polymorphic collections
-    * custom conditions support on both single and double relationships, with smart individual collection condition devolution
-    * custom one-off finder support on all associations
-    * extension support for all injected associations
+= Usage
 
-Todo:
+== Installation
 
-    * rewrite this documentation page
+  script/plugin install svn://rubyforge.org/var/svn/polymorphs/has_many_polymorphs
 
-download and installation
+(There's also a gem version. Run: <tt>sudo gem install has_many_polymorphs</tt>. Also make sure to add <tt>require 'has_many_polymorphs'</tt> to <tt>environment.rb</tt>, before Rails::Initializer block.)
 
-The plugin is now on hosted on Rubyforge at http://rubyforge.org/projects/polymorphs/.
+== Configuration
 
-Download a release bundle from here, or install directly from the latest repository source with:
+Setup the parent model as so:
 
-script/plugin install svn://rubyforge.org/var/svn/polymorphs/has_many_polymorphs
+  class Petfood < ActiveRecord::Base
+    has_many_polymorphs :eaters, :from => [:dogs, :cats, :birds]
+  end
 
-If you want to automatically keep up with new releases (recommended), add the flag -x, which will set up an svn:external item in your source tree:
+The join model:
 
-script/plugin install -x svn://rubyforge.org/var/svn/polymorphs/has_many_polymorphs
-gem version
+  class EatersPetfood < ActiveRecord::Base
+    belongs_to :petfood
+    belongs_to :eater, :polymorphic => true
+  end
 
-There is also a gem version if that is easiest for you:
+One of the child models:
 
-gem install has_many_polymorphs
+  class Dog < ActiveRecord::Base
+    # nothing
+  end
 
-Note that if you use the gem, you have to manually require it. If you are using Rails, this means you need to add it in config/environment.rb, just after the bootstrap:
+See ActiveRecord::Associations::PolymorphicClassMethods for more configuration options.
 
-require File.join(File.dirname(__FILE__), 'boot')
-require 'has_many_polymorphs'
+== Helper methods example
 
-reporting bugs
+  petfood = Petfood.find(1)
+  petfood.eaters.map(&:class) # => [Dog, Cat, Cat, Bird]
+  
+  petfood.eaters.push(Cat.create)
+  petfood.eaters << Cat.create
+  petfood.cats.size # => 4
+  petfood.eaters.size # => 6
+  
+  petfood.eaters.delete(petfood.dogs[0])
+  petfood.dogs.size # => 0
+  petfood.eaters.size # => 5
 
-You can visit the discussion forums if you have any problems or suggestions. Also, I can often be found in the IRC channel #polymorphs on irc.freenode.net.
-basic setup
+  # works both ways
+  petfood.eaters[0].petfoods.include?(petfood) # => true
 
-# this is the (typed) class that accepts the (untyped) polymorphic objects as children
-class Petfood < ActiveRecord::Base
-  has_many_polymorphs :eaters, :from => [:dogs, :cats, :birds]
-end
+See ActiveRecord::Associations::PolymorphicAssociation for more helper method details.
 
-# this is the join table
-class EatersPetfood < ActiveRecord::Base
-  belongs_to :petfood
-  belongs_to :eater, :polymorphic => true
-end
+= Extras
 
-# this is an example of one of the child classes
-class Dog < ActiveRecord::Base
-  # nothing
-end
+== Double-sided polymorphism
 
-There are tentative reports that has_many_polymorphs can work without a join table, by joining the parent class :through itself. Such a configuration is untested and might not behave correctly, but might be ok for your purposes.
-usage
+Double-sided relationships are defined on the join model:
 
-petfood = Petfood.find(1)
-petfood.eaters.map(&:class) # => [Dog, Cat, Cat, Bird]
+  class Devouring < ActiveRecord::Base
+    belongs_to :eater, :polymorphic => true
+    belongs_to :eaten, :polymorphic => true
+  
+    acts_as_double_polymorphic_join(
+      :eaters =>[:dogs, :cats], 
+      :eatens => [:cats, :birds]
+    )       
+  end
+  
+Now, dogs and cats can eat birds and cats. Birds can't eat anything (they aren't <tt>eaters</tt>) and dogs can't be eaten by anything (since they aren't <tt>eatens</tt>). The keys stand for what the models are, not what they do. 
 
-petfood.eaters.push(Cat.create)
-petfood.eaters << Cat.create
-petfood.cats.size # => 4
-petfood.eaters.size # => 6
+In this case, each eater/eaten relationship is called a Devouring.
 
-petfood.eaters.delete(petfood.dogs[0])
-petfood.dogs.size # => 0
-petfood.eaters.size # => 5
+See ActiveRecord::Associations::PolymorphicClassMethods for more.
 
-# works both ways
-petfood.eaters[0].petfoods.include?(petfood) # => true
+== Troubleshooting
 
-solving problems
+Some debugging tools are available in <tt>lib/has_many_polymorphs/debugging_tools.rb</tt>.
 
-First, note that Rails 1.2.3 or later is required.
+If you are having trouble, think very carefully about how your model classes, key columns, and table names relate. You may have to explicitly specify options on your join model such as <tt>:class_name</tt>, <tt>:foreign_key</tt>, or <tt>:as</tt>. The included tests are a good place to look for examples.
 
-The best place to look for examples is in the test models, schema, and fixtures included with the plugin. All features are demonstrated.
+Note that because of the way Rails reloads model classes, the plugin can sometimes bog down your development server. Set <tt>config.cache_classes = true</tt> in <tt>config/environments/development.rb</tt> to avoid this. 
 
-Also, see the plugins category on this blog, which will have posts for each major feature addition.
+== Further resources
 
-If you are having trouble, think very carefully about how your model classes, key columns, and table names relate. You may have to explicitly specify options on your join model such as :class_name, :foreign_key, or :as.
-common configuration options
-
-You can use the :through key if your join table is not named in the standard (eaters_petfoods) way. Other ActiveRecord options should work, but may require minor modifications.
-
-You don’t need any associations in the child classes; they are automatically injected by the parent’s setup. However, if you are relying on Rails’ automatic class reloading for your development cycle, you will either need to explicitly define the has_many relationships in the child model classes, or reference the parent class constant directly in the child model files, since Rails does not detect that the children depend on the parent without a little help.
-
-If you want to avoid name conflicts on the secondary collection methods, you can pass in :rename_individual_collections => true and the singularized polymorphic name will be prepended to the methods (e.g., petfood.eater_cats instead of just petfood.cats).
-self-referential relationships
-
-Self-references work, but you have to rename the parent reference in the join table by using the :as => key on the has_many_polymorphs call. Otherwise there is no way to distinguish between yourself as your child and yourself as your parent. This post has a more detailed explanation.
-
-Also say you have a join model called MyJoinRecord. A self-referential model will have two relationships to this join model. If you need to access those join records from the perspective of the child, you need to use the .my_join_records_as_child method. The regular .my_join_records method goes the other way. When in doubt, assume that the model you are in has the perspective of the parent.
-sti support
-
-If a child class is defined through single table inheritance (STI), specify the child class, not the base class. If you have multiple STI children you need to list each one individually.
-namespaced models
-
-Namespace your models with standard Rails de-classification styles when you reference them in the plugin calls as symbols. For example, if you have a model Users::SuperUser that you want to use as a child class, make the polymorphs call like so:
-
-  has_many_polymorphs :authorized_people, 
-                      :from => [:"users/super_users"]
-
-double polymorphism
-
-For double polymorphism documentation, see this post for an introduction, and this post for information on the optional parameters.
-custom condition and extension options
-
-For the regular has_many_polymorphs macro, your parameter choices include the following:
-key 	meaning/value 	affected classes
-:from 	an array of symbols for the child classes 	the polymorph, and then is split to create the individual collections
-:as 	a symbol for the relationship the parent acts as in the join 	the parent model, the join model
-:through 	a symbol for the join model 	everything (the polymorph, the individual associations, the join associations, and the parent associations as seen from the children)
-:join_class_ name 	the name of the join model’s class 	the join model
-:foreign_key 	the column for the parent’s id in the join 	the join model
-:foreign_type_ key 	the column for the parent’s class in the join, if the parent itself is polymorphic 	the join model, although usually only useful for double polymorphs
-:polymorphic_ key 	the column for the child’s id in the join 	the join model
-:polymorphic_ type_key 	the column for the child’s class in the join 	the join model
-:dependent 	:destroy, :nullify, :delete_all 	how the join record gets treated on any associate delete (whether from the polymorph or from an individual collection); defaults to :destroy
-:skip_ duplicates 	if true, will check to avoid pushing already associated records 	the polymorph and individual associations; defaults to true, but is faster when false
-:rename_ individual_ collections 	if true, all individual collections are prepended with the polymorph name, and the children’s parent collection becomes :as + “_of_” + polymorph; for example, zoos_of_animals 	the names of the individual collections everywhere
-:extend 	one or an array of mixed modules and procs 	the polymorph, the individual collections
-:join_extend 	one or an array of mixed modules and procs 	the join associations for both the parent and the children
-:parent_extend 	one or an array of mixed modules and procs 	the parent associations as seen from the children
-:table_aliases 	a hash of ambiguous table/column names to disambiguated temporary names 	the instantiation of the polymorphic query; never change this
-:select 	a string containing the SELECT portion of the polymorphic SQL query 	the polymorph only; never change this
-:conditions 	an array or string of conditions for the SQL WHERE clause 	everything
-:order 	a string for the SQL ORDER BY clause 	everything
-:group 	an array or string of conditions for the SQL GROUP BY clause 	the polymorph, the individual collections
-:limit 	an integer 	the polymorph, the individual collections
-:offset 	an integer 	the polymorph only
-:uniq 	if true, the records returned are passed through a pure-Ruby uniq() before they are given to you 	the polymorph; almost never useful (inherited from has_many :through)
-
-Additionally, if you pass a block to the macro, it gets converted to a Proc and added to :extend. The only required parameter, aside from the association name, is :from.
-custom finder usage
-
-See this post for examples of useful custom queries against the polymorphic association. Also see the same post for an explanation of the :conditions devolution strategy.
-speed issues in development mode
-
-Because of the way Rails reloads model classes, the plugin can sometimes bog down your development server. Turn on config.cache_classes = true in RAILS_ROOT/config/environments/development.rb to avoid this.
-
-The issue does not affect production mode at all.
-show your support
-
-By request, I set up a wishlist. If you have benefited from the plugin, you can demonstrate your appreciation:
-My Amazon.com Wish List
-developers, contributors, and testers
-
-The bulk of the development and maintenance is by me, Evan Weaver. Contributors and testers include Chris Wanstrath, David Lemstra, Mike Vincent, B. Dabney, Jonathan del Strother, Francois Simond, and others.
-
+* http://blog.evanweaver.com/pages/code#polymorphs
+* http://rubyforge.org/forum/forum.php?forum_id=8117

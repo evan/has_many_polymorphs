@@ -1,37 +1,49 @@
 
-# hope these don't mess anyone up
-
 class String
+
+  # Changes an underscored string into a class reference.
   def _as_class
     # classify expects self to be plural
     self.classify.constantize
   end
-#  def _as_base_class; _as_class.base_class; end
+
+  # For compatibility with the Symbol extensions.
   alias :_singularize :singularize
   alias :_pluralize :pluralize
   alias :_classify :classify
 end
 
 class Symbol
+  
+  # Changes an underscored symbol into a class reference.
   def _as_class; self.to_s._as_class; end
-#  def _as_base_class; self.to_s._as_base_class; end
+  
+  # Changes a plural symbol into a singular symbol.
   def _singularize; self.to_s.singularize.to_sym; end
+
+  # Changes a singular symbol into a plural symbol.
   def _pluralize; self.to_s.pluralize.to_sym; end
+
+  # Changes a symbol into a class name string.
   def _classify; self.to_s.classify; end
 end
 
 class Array
+
+  # Flattens the first level of self.
   def _flatten_once
     self.inject([]){|r, el| r + Array(el)}
   end
 
-  # from http://dev.rubyonrails.org/browser/trunk/activesupport/lib/active_support/core_ext/array/extract_options.rb?rev=7217 
+  # Rails 1.2.3 compatibility method. Copied from http://dev.rubyonrails.org/browser/trunk/activesupport/lib/active_support/core_ext/array/extract_options.rb?rev=7217 
   def _extract_options!
     last.is_a?(::Hash) ? pop : {}
   end
 end
 
-class Hash    
+class Hash
+
+  # An implementation of select that returns a Hash.
   def _select
     Hash[*self.select do |key, value|
       yield key, value
@@ -40,12 +52,16 @@ class Hash
 end
 
 class Object
+
+  # Returns the metaclass of self.
   def _metaclass; (class << self; self; end); end
 
+  # Logger shortcut.
   def _logger_debug s
     RAILS_DEFAULT_LOGGER.debug(s) if RAILS_DEFAULT_LOGGER
   end  
-  
+
+  # Logger shortcut.  
   def _logger_warn s
     if RAILS_DEFAULT_LOGGER
       RAILS_DEFAULT_LOGGER.warn(s) 
@@ -57,7 +73,10 @@ class Object
 end
 
 class ActiveRecord::Base
+
+  # Return the base class name as a string.
   def _base_class_name
     self.class.base_class.name.to_s
   end
+  
 end

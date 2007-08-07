@@ -2,13 +2,15 @@
 module ActiveRecord
   class Base
     
-    class << self      
+    class << self
+    
+      # Interprets a polymorphic row from a unified SELECT, returning the appropriate ActiveRecord instance. Overrides ActiveRecord::Base.instantiate_without_callbacks.
       def instantiate_without_callbacks_with_polymorphic_checks(record)
         if record['polymorphic_parent_class']
           reflection = record['polymorphic_parent_class'].constantize.reflect_on_association(record['polymorphic_association_id'].to_sym)
 #          _logger_debug "Instantiating a polymorphic row for #{record['polymorphic_parent_class']}.reflect_on_association(:#{record['polymorphic_association_id']})"
 
-          # rewrite 'record' with the right column names
+          # rewrite the record with the right column names
           table_aliases = reflection.options[:table_aliases].dup
           record = Hash[*table_aliases.keys.map {|key| [key, record[table_aliases[key]]] }.flatten]          
           
@@ -25,6 +27,7 @@ module ActiveRecord
           end
           
           # eject the join keys
+          # XXX not very readable
           record = Hash[*record._select do |column, value| 
             column[/^#{klass.table_name}/]
           end.map do |column, value|
@@ -40,7 +43,7 @@ module ActiveRecord
         end
       end
       
-      alias_method_chain :instantiate_without_callbacks, :polymorphic_checks # oh yeah
+      alias_method_chain :instantiate_without_callbacks, :polymorphic_checks 
     end
     
   end

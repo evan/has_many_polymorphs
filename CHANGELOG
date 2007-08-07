@@ -1,5 +1,5 @@
 
-v28. RDoc documentation; repository relocation; Rakefile cleanup.
+v28. RDoc documentation; repository relocation; Rakefile cleanup; remove deprecated plugin-specific class caching.
 
 v27.5. Various bugfixes; Postgres problems may remain on edge.
 
