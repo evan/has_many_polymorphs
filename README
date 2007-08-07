@@ -33,7 +33,7 @@ And a generator for a tagging system, a common use case.
 == Installation
 
 To install the Rails plugin, run:
-  script/plugin install svn://rubyforge.org/var/svn/polymorphs/has_many_polymorphs
+  script/plugin install svn://rubyforge.org/var/svn/fauna/has_many_polymorphs/trunk
 
 There's also a gem version. To install it instead, run: 
   sudo gem install has_many_polymorphs
