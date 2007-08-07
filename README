@@ -1,5 +1,5 @@
 
-has_many_polymorphs
+Has_many_polymorphs
 
 An ActiveRecord plugin for defining self-referential polymorphic associations.
 
