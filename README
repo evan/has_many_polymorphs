@@ -9,7 +9,7 @@ Copyright 2007 Cloudburst, LLC. Licensed under the AFL 3. See the included LICEN
 
 == Description
 
-This plugin gives you the ability to define easy-to-use self-referential polymorphic associations with full array-like behavior in your models. It is an extension of <tt>has_many :through</tt>.
+This plugin lets you define self-referential and double-sided polymorphic associations in your models. It is an extension of <tt>has_many :through</tt>.
 
 “Polymorphic” means an association can freely point to any of several unrelated model classes, instead of being tied to one particular class.
 
