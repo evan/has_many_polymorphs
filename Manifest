@@ -36,7 +36,6 @@ lib/has_many_polymorphs/class_methods.rb
 lib/has_many_polymorphs/base.rb
 lib/has_many_polymorphs/autoload.rb
 lib/has_many_polymorphs/association.rb
-install.rb
 init.rb
 generators/tagging/templates/tags_controller.rb
 generators/tagging/templates/tags.yml
