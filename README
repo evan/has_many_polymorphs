@@ -1,7 +1,7 @@
 
 Has_many_polymorphs
 
-An ActiveRecord plugin for defining self-referential polymorphic associations.
+An ActiveRecord plugin for self-referential and double-sided polymorphic associations.
 
 == License
 
