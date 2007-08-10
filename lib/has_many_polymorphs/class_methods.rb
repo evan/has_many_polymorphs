@@ -186,7 +186,7 @@ If you pass a block, it gets converted to a Proc and added to <tt>:extend</tt>.
 =end
 
       def has_many_polymorphs (association_id, options = {}, &extension)
-        _logger_debug "has_many_polymorphs: INIT"
+        _logger_debug "has_many_polymorphs: associating #{self}.#{association_id}"
         reflection = create_has_many_polymorphs_reflection(association_id, options, &extension)
         # puts "Created reflection #{reflection.inspect}"
         # configure_dependency_for_has_many(reflection)
