@@ -106,8 +106,7 @@ See ActiveRecord::Associations::PolymorphicClassMethods for more.
 
 == Tagging generator
 
-Has_many_polymorphs includes a tagging system generator.
-
+Has_many_polymorphs includes a tagging system generator. Run:
   script/generate tagging Dog Cat [...MoreModels...]
 
 This adds a migration and new Tag and Tagging models in <tt>app/models</tt>. It configures Tag with an appropriate <tt>has_many_polymorphs</tt> call against the models you list at the command line. It also adds the file <tt>lib/tagging_extensions.rb</tt> and <tt>requires</tt> it in <tt>environment.rb</tt>. 
