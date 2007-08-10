@@ -22,7 +22,7 @@ This plugin lets you define self-referential and double-sided polymorphic associ
 * namespace support
 * automatic individual and reverse associations
 
-The plugin also includes a generator for a tagging system, a common use case.
+The plugin also includes a generator for a tagging system, a common use case (see below).
 
 == Requirements
 
@@ -108,11 +108,21 @@ See ActiveRecord::Associations::PolymorphicClassMethods for more.
 
 Has_many_polymorphs includes a tagging system generator.
 
-  ./script/generate tagging TaggableModel1 TaggableModel2 [..]
+  ./script/generate tagging Dog Cat [...MoreModels...]
 
-You can use the optional flag <tt>--skip-migration</tt> to skip generating a migration (for example, if you are converting from <tt>acts_as_taggable</tt>). You can also use the flag <tt>--self-referential</tt> if you want to be able to tag tags.
+This adds a migration and new Tag and Tagging models in <tt>app/models</tt>. It configures Tag with an appropriate <tt>has_many_polymorphs</tt> call against the models you listed at the command line. It also adds the file <tt>lib/tagging_extensions.rb</tt> and <tt>require</tt>s it in <tt>environment.rb</tt>. 
 
-Tests will be generated, but will not work unless you have at least 2 fixture entries for the first two taggable models. Their ids must be 1 and 2.
+Tests will also be generated. The tests will not work unless you have at least 2 fixture entries for each of the first two models listed at the command line. Their record ids must be 1 and 2.
+
+The generator accepts the optional flag <tt>--skip-migration</tt> to skip generating a migration (for example, if you are converting from <tt>acts_as_taggable</tt>). It also accepts the flag <tt>--self-referential</tt> if you want to be able to tag tags.
+
+== Tagging usage example
+
+Once you've run the generator, you can tag records as follows:
+
+
+
+See ActiveRecord::Base::TaggingExtensions, Tag, and Tagging for more.
 
 == Troubleshooting
 
