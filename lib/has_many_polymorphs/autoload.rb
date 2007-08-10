@@ -22,7 +22,7 @@ Overrides Rails::Initializer#after_initialize.
             model.constantize
             _logger_warn "has_many_polymorphs: preloaded parent model #{model}"
           rescue Object => e
-            _logger_warn "error preloading #{model}: #{e.inspect}"
+            _logger_warn "has_many_polymorphs: WARNING; possibly critical error preloading #{model}: #{e.inspect}"
           end
         end
       end
