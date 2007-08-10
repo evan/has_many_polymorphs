@@ -96,10 +96,10 @@ class PolymorphTest < Test::Unit::TestCase
     assert_equal @join_count + 1, EatersFoodstuff.count
 
     # not reloaded
-    assert_equal @m, @bits.eaters.size
-    assert_equal @m + 1, @bits.eaters.count # SQL :)
+    #assert_equal @m, @bits.eaters.size # Doesn't behave this way on latest edge anymore
+    assert_equal @m + 1, @bits.eaters.count # SQL
 
-    # is the new association there?
+    # reload; is the new association there?
     assert @bits.eaters.reload
     assert @bits.eaters.include?(@chloe)
   end
