@@ -110,17 +110,30 @@ Has_many_polymorphs includes a tagging system generator.
 
   ./script/generate tagging Dog Cat [...MoreModels...]
 
-This adds a migration and new Tag and Tagging models in <tt>app/models</tt>. It configures Tag with an appropriate <tt>has_many_polymorphs</tt> call against the models you listed at the command line. It also adds the file <tt>lib/tagging_extensions.rb</tt> and <tt>require</tt>s it in <tt>environment.rb</tt>. 
+This adds a migration and new Tag and Tagging models in <tt>app/models</tt>. It configures Tag with an appropriate <tt>has_many_polymorphs</tt> call against the models you list at the command line. It also adds the file <tt>lib/tagging_extensions.rb</tt> and <tt>requires</tt> it in <tt>environment.rb</tt>. 
 
-Tests will also be generated. The tests will not work unless you have at least 2 fixture entries for each of the first two models listed at the command line. Their record ids must be 1 and 2.
-
-The generator accepts the optional flag <tt>--skip-migration</tt> to skip generating a migration (for example, if you are converting from <tt>acts_as_taggable</tt>). It also accepts the flag <tt>--self-referential</tt> if you want to be able to tag tags.
-
-== Tagging usage example
+Tests will also be generated. 
 
 Once you've run the generator, you can tag records as follows:
 
+  >> d = Dog.create(:name => "Rover")
+  #<Dog id: 3, name: "Rover">
+  >> d.tag_list
+  ""
+  >> d.tag_with "fierce loud"
+  #<Dog id: 3, name: "Rover">
+  >> d.tag_list
+  "fierce loud"
+  >> c = Cat.create(:name => "Chloe")
+  #<Cat id: 1, name: "Chloe">
+  >> c.tag_with "fierce cute"
+  #<Cat id: 1, name: "Chloe">
+  >> c.tag_list
+  "cute fierce"
+  >> Tag.find_by_name("fierce").taggables 
+  [#<Cat id: 1, name: "Chloe">, #<Dog id: 3, name: "Rover">]
 
+The generator accepts the optional flag <tt>--skip-migration</tt> to skip generating a migration (for example, if you are converting from <tt>acts_as_taggable</tt>). It also accepts the flag <tt>--self-referential</tt> if you want to be able to tag tags.
 
 See ActiveRecord::Base::TaggingExtensions, Tag, and Tagging for more.
 
