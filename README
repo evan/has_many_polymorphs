@@ -50,7 +50,7 @@ Setup the parent model as so:
 
 The join model:
 
-  class EatersKennel < ActiveRecord::Base
+  class GuestsKennel < ActiveRecord::Base
     belongs_to :kennel
     belongs_to :guest, :polymorphic => true
   end
