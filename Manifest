@@ -37,7 +37,6 @@ lib/has_many_polymorphs/base.rb
 lib/has_many_polymorphs/autoload.rb
 lib/has_many_polymorphs/association.rb
 init.rb
-generators/tagging/templates/tags_controller.rb
 generators/tagging/templates/tags.yml
 generators/tagging/templates/taggings.yml
 generators/tagging/templates/tagging_test.rb
@@ -46,11 +45,8 @@ generators/tagging/templates/tagging.rb
 generators/tagging/templates/tag_test.rb
 generators/tagging/templates/tag.rb
 generators/tagging/templates/migration.rb
-generators/tagging/templates/index.rhtml
 generators/tagging/tagging_generator.rb
 TODO
-Rakefile
 README
-Manifest
 LICENSE
 CHANGELOG
