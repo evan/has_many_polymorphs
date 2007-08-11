@@ -26,7 +26,7 @@ The plugin also includes a generator for a tagging system, a common use case (se
 
 == Requirements
 
-* Rails 1.2.3 or greater
+* Rails 1.2.3 or grguest
 
 = Usage
 
@@ -44,15 +44,15 @@ If you are using the gem, make sure to add <tt>require 'has_many_polymorphs'</tt
 
 Setup the parent model as so:
 
-  class Petfood < ActiveRecord::Base
-    has_many_polymorphs :eaters, :from => [:dogs, :cats, :birds]
+  class Kennel < ActiveRecord::Base
+    has_many_polymorphs :guests, :from => [:dogs, :cats, :birds]
   end
 
 The join model:
 
-  class EatersPetfood < ActiveRecord::Base
-    belongs_to :petfood
-    belongs_to :eater, :polymorphic => true
+  class EatersKennel < ActiveRecord::Base
+    belongs_to :kennel
+    belongs_to :guest, :polymorphic => true
   end
 
 One of the child models:
@@ -65,20 +65,29 @@ See ActiveRecord::Associations::PolymorphicClassMethods for more configuration o
 
 == Helper methods example
 
-  petfood = Petfood.find(1)
-  petfood.eaters.map(&:class) # => [Dog, Cat, Cat, Bird]
+  >> k = Kennel.find(1)
+  #<Kennel id: 1, name: "Happy Paws">
+  >> k.guests.map(&:class) 
+  [Dog, Cat, Cat, Bird]
   
-  petfood.eaters.push(Cat.create)
-  petfood.eaters << Cat.create
-  petfood.cats.size # => 4
-  petfood.eaters.size # => 6
-  
-  petfood.eaters.delete(petfood.dogs[0])
-  petfood.dogs.size # => 0
-  petfood.eaters.size # => 5
+  >> k.guests.push(Cat.create); k.cats.size
+  3
+  >> k.guests << Cat.create; k.cats.size
+  4
+  >> k.guests.size
+  6
 
-  # works both ways
-  petfood.eaters[0].petfoods.include?(petfood) # => true
+  >> d = k.dogs.first
+  #<Dog id: 3, name: "Rover">
+  >> d.kennels 
+  [#<Kennel id: 1, name: "Happy Paws">]
+  
+  >> k.guests.delete(d); k.dogs.size
+  0
+  >> k.guests.size
+  5  
+  
+Note that the parent method is always plural, even if there is only one parent (<tt>Dog#kennels</tt>, not <tt>Dog#kennel</tt>).
 
 See ActiveRecord::Associations::PolymorphicAssociation for more helper method details.
 
@@ -89,18 +98,18 @@ See ActiveRecord::Associations::PolymorphicAssociation for more helper method de
 Double-sided relationships are defined on the join model:
 
   class Devouring < ActiveRecord::Base
-    belongs_to :eater, :polymorphic => true
+    belongs_to :guest, :polymorphic => true
     belongs_to :eaten, :polymorphic => true
   
     acts_as_double_polymorphic_join(
-      :eaters =>[:dogs, :cats], 
+      :guests =>[:dogs, :cats], 
       :eatens => [:cats, :birds]
     )       
   end
   
-Now, dogs and cats can eat birds and cats. Birds can't eat anything (they aren't <tt>eaters</tt>) and dogs can't be eaten by anything (since they aren't <tt>eatens</tt>). The keys stand for what the models are, not what they do. 
+Now, dogs and cats can eat birds and cats. Birds can't eat anything (they aren't <tt>guests</tt>) and dogs can't be eaten by anything (since they aren't <tt>eatens</tt>). The keys stand for what the models are, not what they do. 
 
-In this case, each eater/eaten relationship is called a Devouring.
+In this case, each guest/eaten relationship is called a Devouring.
 
 See ActiveRecord::Associations::PolymorphicClassMethods for more.
 
