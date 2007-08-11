@@ -17,7 +17,7 @@ This plugin lets you define self-referential and double-sided polymorphic associ
 
 * self-references
 * double-sided polymorphism
-* efficient, merged association SELECT
+* efficient database usage
 * STI support
 * namespace support
 * automatic individual and reverse associations
