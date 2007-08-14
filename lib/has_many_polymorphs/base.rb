@@ -37,6 +37,7 @@ module ActiveRecord
           # allocate and assign values
           returning(klass.allocate) do |obj|
             obj.instance_variable_set("@attributes", record)
+            obj.instance_variable_set("@attributes_cache", Hash.new)
           end
         else                       
           instantiate_without_callbacks_without_polymorphic_checks(record)
