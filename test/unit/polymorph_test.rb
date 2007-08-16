@@ -588,11 +588,22 @@ class PolymorphTest < Test::Unit::TestCase
     assert_equal EatersFoodstuff.name, Petfood.reflect_on_association(:eaters).class_name
   end
   
-  def test_parent_order_orders_parents
+  def test_parent_order
     @alice.foodstuffs_of_eaters << Petfood.find(:all, :order => "the_petfood_primary_key ASC")
     @alice.reload #not necessary
     assert_equal [2,1], @alice.foodstuffs_of_eaters.map(&:id)  
   end
+
+  def test_parent_conditions
+    @kibbles.eaters << @alice
+    assert_equal [@alice], @kibbles.eaters
+
+    @snausages = Petfood.create(:name => 'Snausages')
+    @snausages.eaters << @alice    
+    assert_equal [@alice], @snausages.eaters
+    
+    assert_equal [@kibbles], @alice.foodstuffs_of_eaters
+  end  
 
 #  def test_polymorphic_include
 #    @kibbles.eaters << [@kibbles, @alice, @puma, @spot, @bits]

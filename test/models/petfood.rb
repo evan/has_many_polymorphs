@@ -24,6 +24,7 @@ class Petfood < ActiveRecord::Base
     :conditions => "NULL IS NULL",
     :order => "eaters_foodstuffs.updated_at ASC",
     :parent_order => "the_petfood_primary_key DESC",
+    :parent_conditions => "name != 'Snausages'",
     :extend => [ExtensionModule, OtherExtensionModule, proc {}],
     :join_extend => proc { 
       def a_method

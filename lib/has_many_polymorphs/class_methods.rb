@@ -175,6 +175,7 @@ The method generates a number of associations aside from the polymorphic one. In
 <tt>:join_extend</tt>:: One or an array of mixed modules and procs, which are applied to the join association.
 <tt>:parent_extend</tt>:: One or an array of mixed modules and procs, which are applied to the target classes' association to the parent.
 <tt>:conditions</tt>:: An array or string of conditions for the SQL <tt>WHERE</tt> clause. 
+<tt>:parent_conditions</tt>:: An array or string of conditions which are applied to the target classes' association to the parent.
 <tt>:order</tt>:: A string for the SQL <tt>ORDER BY</tt> clause.
 <tt>:group</tt>:: An array or string of conditions for the SQL <tt>GROUP BY</tt> clause. Affects the polymorphic and individual associations.
 <tt>:limit</tt>:: An integer. Affects the polymorphic and individual associations.
@@ -219,6 +220,7 @@ If you pass a block, it gets converted to a Proc and added to <tt>:extend</tt>.
           :select, # applies to the polymorphic relationship
           :conditions, # applies to the polymorphic relationship, the children, and the join
   #        :include,
+          :parent_conditions,
           :order, # applies to the polymorphic relationship, the children, and the join
           :group, # only applies to the polymorphic relationship and the children
           :limit, # only applies to the polymorphic relationship and the children
@@ -396,7 +398,7 @@ If you pass a block, it gets converted to a Proc and added to <tt>:extend</tt>.
                 :conditions => devolve(association_id, reflection, reflection.options[:conditions], reflection.klass)
                 )
   
-              # the association to the collection parents
+              # the association to the target's parents
               association = "#{reflection.options[:as]._pluralize}#{"_of_#{association_id}" if reflection.options[:rename_individual_collections]}".to_sym                        
               has_many(association, 
                 :through => through, 
@@ -404,6 +406,7 @@ If you pass a block, it gets converted to a Proc and added to <tt>:extend</tt>.
                 :source => reflection.options[:as], 
                 :foreign_key => reflection.options[:foreign_key] ,
                 :extend => reflection.options[:parent_extend],
+                :conditions => reflection.options[:parent_conditions],
                 :order => reflection.options[:parent_order],
                 :offset => reflection.options[:parent_offset],
                 :limit => reflection.options[:parent_limit],
