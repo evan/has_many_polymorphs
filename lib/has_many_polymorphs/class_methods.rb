@@ -157,7 +157,7 @@ This method createds a single-sided polymorphic relationship.
 
 The only required parameter, aside from the association name, is <tt>:from</tt>. 
 
-The method generates a number of associations aside from the polymorphic one. In this example Petfood also gets <tt>dogs</tt>, <tt>cats</tt>, and <tt>birds</tt>, and Dog, Cat, and Bird get <tt>petfoods</tt>. (The reverse association to the parent is always plural.)
+The method generates a number of associations aside from the polymorphic one. In this example Petfood also gets <tt>dogs</tt>, <tt>cats</tt>, and <tt>birds</tt>, and Dog, Cat, and Bird get <tt>petfoods</tt>. (The reverse association to the parents is always plural.)
 
 == Available options
 
@@ -173,9 +173,9 @@ The method generates a number of associations aside from the polymorphic one. In
 <tt>:rename_individual_collections</tt>:: If <tt>true</tt>, all individual collections are prepended with the polymorph name, and the children's parent collection is appended with "_of_#{association_name}"</tt>. For example, <tt>zoos</tt> becomes <tt>zoos_of_animals</tt>. This is to help avoid method name collisions in crowded classes.
 <tt>:extend</tt>:: One or an array of mixed modules and procs, which are applied to the polymorphic association (usually to define custom methods).
 <tt>:join_extend</tt>:: One or an array of mixed modules and procs, which are applied to the join association.
-<tt>:parent_extend</tt>:: One or an array of mixed modules and procs, which are applied to the target classes' association to the parent.
+<tt>:parent_extend</tt>:: One or an array of mixed modules and procs, which are applied to the target classes' association to the parents.
 <tt>:conditions</tt>:: An array or string of conditions for the SQL <tt>WHERE</tt> clause. 
-<tt>:parent_conditions</tt>:: An array or string of conditions which are applied to the target classes' association to the parent.
+<tt>:parent_conditions</tt>:: An array or string of conditions which are applied to the target classes' association to the parents.
 <tt>:order</tt>:: A string for the SQL <tt>ORDER BY</tt> clause.
 <tt>:group</tt>:: An array or string of conditions for the SQL <tt>GROUP BY</tt> clause. Affects the polymorphic and individual associations.
 <tt>:limit</tt>:: An integer. Affects the polymorphic and individual associations.

@@ -1,4 +1,6 @@
 
+v2.X. :parent_conditions option.
+
 v2.9. Gem version renumbering; my apologies if this messes anyone up.
 
 v2.8. RDoc documentation; repository relocation; Rakefile cleanup; remove deprecated plugin-specific class caching.
