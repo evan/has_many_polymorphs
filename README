@@ -155,5 +155,13 @@ Note that because of the way Rails reloads model classes, the plugin can sometim
 
 == Further resources
 
-* http://blog.evanweaver.com/pages/code#polymorphs
 * http://rubyforge.org/forum/forum.php?forum_id=16450
+* http://blog.evanweaver.com/articles/2007/08/15/polymorphs-tutorial
+* http://blog.evanweaver.com/articles/2007/02/22/polymorphs-25-total-insanity-branch
+* http://blog.evanweaver.com/articles/2007/02/09/how-to-find-the-most-popular-tags
+* http://blog.evanweaver.com/articles/2007/01/13/growing-up-your-acts_as_taggable
+* http://blog.evanweaver.com/articles/2006/12/02/polymorphs-19
+* http://blog.evanweaver.com/articles/2006/11/05/directed-double-polymorphic-associations
+* http://blog.evanweaver.com/articles/2006/11/04/namespaced-model-support-in-has_many_polymorphs
+* http://blog.evanweaver.com/articles/2006/09/26/sti-support-in-has_many_polymorphs
+* http://blog.evanweaver.com/articles/2006/09/11/make-polymorphic-children-belong-to-only-one-parent
