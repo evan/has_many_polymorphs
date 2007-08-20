@@ -58,12 +58,12 @@ class Object
 
   # Logger shortcut.
   def _logger_debug s
-    RAILS_DEFAULT_LOGGER.debug(s) if RAILS_DEFAULT_LOGGER
+    RAILS_DEFAULT_LOGGER.debug(s) if defined? RAILS_DEFAULT_LOGGER and RAILS_DEFAULT_LOGGER
   end  
 
   # Logger shortcut.  
   def _logger_warn s
-    if RAILS_DEFAULT_LOGGER
+    if defined? RAILS_DEFAULT_LOGGER and RAILS_DEFAULT_LOGGER
       RAILS_DEFAULT_LOGGER.warn(s) 
     else
       $stderr.puts("has_many_polymorphs: #{s}")
