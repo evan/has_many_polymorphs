@@ -185,6 +185,8 @@ The method generates a number of associations aside from the polymorphic one. In
 
 If you pass a block, it gets converted to a Proc and added to <tt>:extend</tt>. 
 
+Note that when you request an individual association instead of the combined association, non-applicable but fully-qualified fields in the <tt>:conditions</tt> will get changed to <tt>NULL</tt>. Because of SQL's 3-value logic, this might require you to pass a clause like <tt>dogs.name IS NULL OR dogs.name != 'Ignore Me'</tt> instead of <tt>dogs.name != 'Ignore Me'</tt> in order for <tt>NULL != 'Ignore Me'</tt> to be true if you request <tt>.cats</tt>.
+
 =end
 
       def has_many_polymorphs (association_id, options = {}, &extension)
