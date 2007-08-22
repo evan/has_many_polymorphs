@@ -153,9 +153,12 @@ If you are having trouble, think very carefully about how your model classes, ke
 
 Note that because of the way Rails reloads model classes, the plugin can sometimes bog down your development server. Set <tt>config.cache_classes = true</tt> in <tt>config/environments/development.rb</tt> to avoid this. 
 
-== Further resources
+== Reporting problems
 
 * http://rubyforge.org/forum/forum.php?forum_id=16450
+
+== Further resources
+
 * http://blog.evanweaver.com/articles/2007/08/15/polymorphs-tutorial
 * http://blog.evanweaver.com/articles/2007/02/22/polymorphs-25-total-insanity-branch
 * http://blog.evanweaver.com/articles/2007/02/09/how-to-find-the-most-popular-tags
