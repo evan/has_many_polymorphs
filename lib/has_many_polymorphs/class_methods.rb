@@ -12,7 +12,9 @@ STI association targets must enumerated and named. For example, if Dog and Cat b
 
 Namespaced models follow the Rails <tt>underscore</tt> convention. ZooAnimal::Lion becomes <tt>:'zoo_animal/lion'</tt>.
 
-You do not need to set up any other associations other than for either the regular method or the double. The join associations and all individual and reverse associations are generated for you. However, a join class and table is required. There are tentative reports that it works without it if you make the parent class join to the targets <tt>:through</tt> itself, but this is untested.
+You do not need to set up any other associations other than for either the regular method or the double. The join associations and all individual and reverse associations are generated for you. However, a join model and table are required. 
+
+There is a tentative report that you can make the parent model be its own join model, but this is untested.
 
 =end
 
@@ -161,23 +163,23 @@ The method generates a number of associations aside from the polymorphic one. In
 
 == Available options
 
-<tt>:from</tt>:: An array of symbols representing the target classes. Required.
+<tt>:from</tt>:: An array of symbols representing the target models. Required.
 <tt>:as</tt>:: A symbol for the parent's interface in the join--what the parent 'acts as'.
 <tt>:through</tt>:: A symbol representing the class of the join model. Follows Rails defaults if not supplied (the parent and the association names, alphabetized, concatenated with an underscore, and singularized).
 <tt>:foreign_key</tt>:: The column name for the parent's id in the join. 
-<tt>:foreign_type_key</tt>:: The column name for the parent's class in the join, if the parent itself is polymorphic. Rarely needed.
+<tt>:foreign_type_key</tt>:: The column name for the parent's class name in the join, if the parent itself is polymorphic. Rarely needed.
 <tt>:polymorphic_key</tt>:: The column name for the child's id in the join.
-<tt>:polymorphic_type_key</tt>:: The column name for the child's class in the join.
+<tt>:polymorphic_type_key</tt>:: The column name for the child's class name in the join.
 <tt>:dependent</tt>:: Accepts <tt>:destroy</tt>, <tt>:nullify</tt>, <tt>:delete_all</tt>. Controls how the join record gets treated on any associate delete (whether from the polymorph or from an individual collection); defaults to <tt>:destroy</tt>.
 <tt>:skip_duplicates</tt>:: If <tt>true</tt>, will check to avoid pushing already associated records (but also triggering a database load). Defaults to <tt>true</tt>.
 <tt>:rename_individual_collections</tt>:: If <tt>true</tt>, all individual collections are prepended with the polymorph name, and the children's parent collection is appended with "_of_#{association_name}"</tt>. For example, <tt>zoos</tt> becomes <tt>zoos_of_animals</tt>. This is to help avoid method name collisions in crowded classes.
 <tt>:extend</tt>:: One or an array of mixed modules and procs, which are applied to the polymorphic association (usually to define custom methods).
 <tt>:join_extend</tt>:: One or an array of mixed modules and procs, which are applied to the join association.
-<tt>:parent_extend</tt>:: One or an array of mixed modules and procs, which are applied to the target classes' association to the parents.
+<tt>:parent_extend</tt>:: One or an array of mixed modules and procs, which are applied to the target models' association to the parents.
 <tt>:conditions</tt>:: An array or string of conditions for the SQL <tt>WHERE</tt> clause. 
-<tt>:parent_conditions</tt>:: An array or string of conditions which are applied to the target classes' association to the parents.
+<tt>:parent_conditions</tt>:: An array or string of conditions which are applied to the target models' association to the parents.
 <tt>:order</tt>:: A string for the SQL <tt>ORDER BY</tt> clause.
-<tt>:parent_order</tt>:: A string for the SQL <tt>ORDER BY</tt> which is applied to the target classes' association to the parents.
+<tt>:parent_order</tt>:: A string for the SQL <tt>ORDER BY</tt> which is applied to the target models' association to the parents.
 <tt>:group</tt>:: An array or string of conditions for the SQL <tt>GROUP BY</tt> clause. Affects the polymorphic and individual associations.
 <tt>:limit</tt>:: An integer. Affects the polymorphic and individual associations.
 <tt>:offset</tt>:: An integer. Only affects the polymorphic association.
@@ -185,7 +187,7 @@ The method generates a number of associations aside from the polymorphic one. In
 
 If you pass a block, it gets converted to a Proc and added to <tt>:extend</tt>. 
 
-== A note about condition nullification
+== On condition nullification
 
 When you request an individual association, non-applicable but fully-qualified fields in the polymorphic association's <tt>:conditions</tt>, <tt>:order</tt>, and <tt>:group</tt> options get changed to <tt>NULL</tt>. For example, if you set <tt>:conditions => "dogs.name != 'Spot'"</tt>, when you request <tt>.cats</tt>, the conditions string is changed to <tt>NULL != 'Spot'</tt>. 
 
