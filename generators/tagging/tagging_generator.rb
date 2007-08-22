@@ -23,7 +23,9 @@ class TaggingGenerator < Rails::Generator::NamedBase
   def verify models
     puts "** Warning: only one taggable model specified; tests may not run properly." if models.size < 2
     models.each do |model|
-      self.class.const_get(model[1..-1].classify) rescue puts "** Error: model #{model[1..-1].classify} could not be loaded." or exit
+      model = model[1..-1].classify
+      next if model == "Tag" # don't load ourselves when --self-referential is used
+      self.class.const_get(model) rescue puts "** Error: model #{model[1..-1].classify} could not be loaded." or exit
     end
   end
   
