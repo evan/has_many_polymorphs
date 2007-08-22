@@ -23,8 +23,8 @@ class Petfood < ActiveRecord::Base
     :ignore_duplicates => false,
     :conditions => "NULL IS NULL",
     :order => "eaters_foodstuffs.updated_at ASC",
-    :parent_order => "the_petfood_primary_key DESC",
-    :parent_conditions => "name != 'Snausages'",
+    :parent_order => "petfoods.the_petfood_primary_key DESC",
+    :parent_conditions => "petfoods.name IS NULL OR petfoods.name != 'Snausages'",
     :extend => [ExtensionModule, OtherExtensionModule, proc {}],
     :join_extend => proc { 
       def a_method

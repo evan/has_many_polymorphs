@@ -607,9 +607,14 @@ class PolymorphTest < Test::Unit::TestCase
   
   def test_self_referential_hmp_with_conditions
     p = Person.find(:first)
-    p.kids << (kid = Person.create(:name => "Tim", :age => 3))
-    p.reload
+    kid = Person.create(:name => "Tim", :age => 3)
+    p.kids << kid
+
+    kid.reload; p.reload
+
+    assert_equal [p], kid.parents
     assert_equal [kid], p.kids
+    assert_equal [kid], p.people
   end
 
 #  def test_polymorphic_include
