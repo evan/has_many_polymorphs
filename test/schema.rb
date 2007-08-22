@@ -67,6 +67,21 @@ ActiveRecord::Schema.define(:version => 0) do
     t.column :protector_type, :string
     t.column :created_at, :datetime, :null => false
     t.column :updated_at, :datetime, :null => false
+  end  
+  
+  create_table :parentships, :force => true do |t|
+    t.column :parent_id, :integer
+    t.column :kid_type, :string
+    t.column :kid_id, :integer 
+    t.column :created_at, :datetime, :null => false
+    t.column :updated_at, :datetime, :null => false
+  end                    
+  
+  create_table :people, :force => true do |t|
+    t.column :name, :string
+    t.column :age, :integer
+    t.column :created_at, :datetime, :null => false
+    t.column :updated_at, :datetime, :null => false
   end
 
 end

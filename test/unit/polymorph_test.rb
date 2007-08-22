@@ -4,7 +4,7 @@ class PolymorphTest < Test::Unit::TestCase
   
   fixtures :cats, :bow_wows, :frogs, :wild_boars, :eaters_foodstuffs, :petfoods,
               :"aquatic/fish", :"aquatic/whales", :"aquatic/little_whale_pupils",
-              :keep_your_enemies_close
+              :keep_your_enemies_close, :people
   require 'beautiful_fight_relationship'  
         
   def setup
@@ -603,7 +603,14 @@ class PolymorphTest < Test::Unit::TestCase
     assert_equal [@alice], @snausages.eaters
     
     assert_equal [@kibbles], @alice.foodstuffs_of_eaters
-  end  
+  end        
+  
+  def test_self_referential_hmp_with_conditions
+    p = Person.find(:first)
+    p.kids << (kid = Person.create(:name => "Tim", :age => 3))
+    p.reload
+    assert_equal [kid], p.kids
+  end
 
 #  def test_polymorphic_include
 #    @kibbles.eaters << [@kibbles, @alice, @puma, @spot, @bits]
