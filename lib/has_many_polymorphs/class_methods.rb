@@ -187,9 +187,9 @@ If you pass a block, it gets converted to a Proc and added to <tt>:extend</tt>.
 
 == A note about condition nullification
 
-When you request an individual association, non-applicable but fully-qualified fields in the polymorphic association's <tt>:conditions</tt>, <tt>:order</tt>, and <tt>:group</tt> options get changed to <tt>NULL</tt>. For example, if you set <tt>:conditions => "dogs.name != 'Spot'"</tt>, when you request <tt>.cats</tt>, the conditions string is changed to <tt>NULL != 'Ignore Me'</tt>. 
+When you request an individual association, non-applicable but fully-qualified fields in the polymorphic association's <tt>:conditions</tt>, <tt>:order</tt>, and <tt>:group</tt> options get changed to <tt>NULL</tt>. For example, if you set <tt>:conditions => "dogs.name != 'Spot'"</tt>, when you request <tt>.cats</tt>, the conditions string is changed to <tt>NULL != 'Spot'</tt>. 
 
-Be aware, however, that <tt>NULL != 'Ignore Me'</tt> returns <tt>false</tt> due to SQL's 3-value logic. Instead, you need to use the <tt>:conditions</tt> string <tt>"dogs.name IS NULL OR dogs.name != 'Spot'"</tt> to get the behavior you probably expect for negative matches.
+Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQL's 3-value logic. Instead, you need to use the <tt>:conditions</tt> string <tt>"dogs.name IS NULL OR dogs.name != 'Spot'"</tt> to get the behavior you probably expect for negative matches.
 
 =end
 
