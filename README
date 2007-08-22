@@ -26,7 +26,7 @@ The plugin also includes a generator for a tagging system, a common use case (se
 
 == Requirements
 
-* Rails 1.2.3 or grguest
+* Rails 1.2.3 or greater
 
 = Usage
 
