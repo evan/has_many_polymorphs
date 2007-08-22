@@ -177,6 +177,7 @@ The method generates a number of associations aside from the polymorphic one. In
 <tt>:conditions</tt>:: An array or string of conditions for the SQL <tt>WHERE</tt> clause. 
 <tt>:parent_conditions</tt>:: An array or string of conditions which are applied to the target classes' association to the parents.
 <tt>:order</tt>:: A string for the SQL <tt>ORDER BY</tt> clause.
+<tt>:parent_order</tt>:: A string for the SQL <tt>ORDER BY</tt> which is applied to the target classes' association to the parents.
 <tt>:group</tt>:: An array or string of conditions for the SQL <tt>GROUP BY</tt> clause. Affects the polymorphic and individual associations.
 <tt>:limit</tt>:: An integer. Affects the polymorphic and individual associations.
 <tt>:offset</tt>:: An integer. Only affects the polymorphic association.
@@ -221,6 +222,7 @@ If you pass a block, it gets converted to a Proc and added to <tt>:extend</tt>.
           :conditions, # applies to the polymorphic relationship, the children, and the join
   #        :include,
           :parent_conditions,
+          :parent_order,
           :order, # applies to the polymorphic relationship, the children, and the join
           :group, # only applies to the polymorphic relationship and the children
           :limit, # only applies to the polymorphic relationship and the children
@@ -329,11 +331,11 @@ If you pass a block, it gets converted to a Proc and added to <tt>:extend</tt>.
         options = {:foreign_key => reflection.options[:foreign_key], 
           :dependent => reflection.options[:dependent], 
           :class_name => reflection.klass.name, 
-          :extend => reflection.options[:join_extend],
-  #        :limit => reflection.options[:limit],
-  #        :offset => reflection.options[:offset],
-          :order => devolve(association_id, reflection, reflection.options[:order], reflection.klass),
-          :conditions => devolve(association_id, reflection, reflection.options[:conditions], reflection.klass)
+          :extend => reflection.options[:join_extend]
+          # :limit => reflection.options[:limit],
+          # :offset => reflection.options[:offset],
+          # :order => devolve(association_id, reflection, reflection.options[:order], reflection.klass, true),
+          # :conditions => devolve(association_id, reflection, reflection.options[:conditions], reflection.klass, true)
           }        
           
         if reflection.options[:foreign_type_key]         
@@ -394,8 +396,8 @@ If you pass a block, it gets converted to a Proc and added to <tt>:extend</tt>.
                 :extend => reflection.options[:join_extend],
   #              :limit => reflection.options[:limit],
   #              :offset => reflection.options[:offset],
-                :order => devolve(association_id, reflection, reflection.options[:order], reflection.klass),
-                :conditions => devolve(association_id, reflection, reflection.options[:conditions], reflection.klass)
+                :order => devolve(association_id, reflection, reflection.options[:parent_order], reflection.klass),
+                :conditions => devolve(association_id, reflection, reflection.options[:parent_conditions], reflection.klass)
                 )
   
               # the association to the target's parents
@@ -483,18 +485,25 @@ If you pass a block, it gets converted to a Proc and added to <tt>:extend</tt>.
         klasses.uniq
       end
       
-      def devolve(association_id, reflection, string, klass)
+      def devolve(association_id, reflection, string, klass, remove_inappropriate_clauses = false) 
+        # XXX remove_inappropriate_clauses is not implemented; we'll wait until someone actually needs it
         return unless string
-        (all_classes_for(association_id, reflection) - # the join class must always be preserved
-          [klass, klass.base_class, reflection.klass, reflection.klass.base_class]).map do |klass|
+        string = string.dup
+        # _logger_debug "has_many_polymorphs: devolving #{string} for #{klass}"
+        inappropriate_classes = (all_classes_for(association_id, reflection) - # the join class must always be preserved
+          [klass, klass.base_class, reflection.klass, reflection.klass.base_class])
+        inappropriate_classes.map do |klass|
           klass.columns.map do |column| 
             [klass.table_name, column.name]
           end.map do |table, column|
             ["#{table}.#{column}", "`#{table}`.#{column}", "#{table}.`#{column}`", "`#{table}`.`#{column}`"]
           end
         end.flatten.sort_by(&:size).reverse.each do |quoted_reference|        
+          # _logger_debug "devolved #{quoted_reference} to NULL"
+          # XXX clause removal would go here 
           string.gsub!(quoted_reference, "NULL")
         end
+        # _logger_debug "has_many_polymorphs: altered to #{string}"
         string
       end
       
