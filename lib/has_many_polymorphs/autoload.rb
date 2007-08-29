@@ -18,7 +18,7 @@ Overrides Rails::Initializer#after_initialize.
       open filename do |file|
         if file.grep(/has_many_polymorphs|acts_as_double_polymorphic_join/).any?
           begin
-            model = File.basename(filename)[0..-4].classify
+            model = File.basename(filename)[0..-4].camelize
             _logger_warn "has_many_polymorphs: preloading parent model #{model}"
             model.constantize
           rescue Object => e
