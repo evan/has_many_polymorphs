@@ -254,7 +254,7 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
         raise PolymorphicError, ":from option must be an array" unless options[:from].is_a? Array            
         options[:from].each{|plural| verify_pluralization_of(plural)}
   
-        options[:as] ||= self.name.demodulize.downcase.to_sym
+        options[:as] ||= self.name.demodulize.underscore.to_sym
         options[:conflicts] = Array(options[:conflicts])      
         options[:foreign_key] ||= "#{options[:as]}_id"
         
