@@ -82,7 +82,7 @@ These options are passed through to targets on both sides of the association. If
                 options[collection_key] = (collection_value ? "#{collection_value}, #{value}" : value)
               when :extend, :join_extend
                 options[collection_key] = Array(collection_value) + Array(value)
-              when :limit, :offset, :dependent, :rename_individual_collections
+              when :limit, :offset, :dependent, :rename_individual_collections, :skip_duplicates
                 options[collection_key] ||= value
               else
                 raise PolymorphicError, "Unknown option key #{key.inspect}."
