@@ -1,6 +1,8 @@
 
 require 'active_record'
 
+RAILS_DEFAULT_LOGGER = nil unless defined? RAILS_DEFAULT_LOGGER
+
 require 'has_many_polymorphs/reflection'
 require 'has_many_polymorphs/association'
 require 'has_many_polymorphs/class_methods'
