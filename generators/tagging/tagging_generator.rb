@@ -83,4 +83,13 @@ class TaggingGenerator < Rails::Generator::NamedBase
       opt.on("--self-referential",
              "Allow tags to tag themselves.") { |v| options[:self_referential] = v }
     end
+    
+    # Useful for generating tests/fixtures
+    def model_one
+      taggable_models[0][1..-1].classify
+    end
+    
+    def model_two
+      taggable_models[1][1..-1].classify rescue model_one
+    end
 end

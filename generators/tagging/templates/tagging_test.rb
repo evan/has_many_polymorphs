@@ -1,12 +1,14 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class TaggingTest < Test::Unit::TestCase
-  fixtures :taggings, :tags, :posts, :recipes
+  fixtures :taggings, :tags, <%= taggable_models[0..1].join(", ") -%>
 
   def setup
-    @obj1 = Recipe.find(1)
-    @obj2 = Recipe.find(2)
-    @obj3 = Post.find(1)
+    @obj1 = <%= model_two %>.find(1)
+    @obj2 = <%= model_two %>.find(2)
+<% if taggable_models.size > 1 -%>
+    @obj3 = <%= model_one -%>.find(1)
+<% end -%>
     @tag1 = Tag.find(1)  
     @tag2 = Tag.find(2)  
     @tagging1 = Tagging.find(1)
@@ -49,7 +51,9 @@ class TaggingTest < Test::Unit::TestCase
       @tagging1.send(:taggable?, true) 
     end
     assert !@tagging1.send(:taggable?)
+<% if taggable_models.size > 1 -%>
     assert @obj3.send(:taggable?)
+<% end -%>
 <% if options[:self_referential] -%>  
     assert @tag1.send(:taggable?)
 <% end -%>    
