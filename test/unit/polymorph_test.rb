@@ -43,14 +43,24 @@ class PolymorphTest < Test::Unit::TestCase
     Tabby.reflect_on_all_associations.map &:check_validity! 
     Kitten.reflect_on_all_associations.map &:check_validity! 
     Dog.reflect_on_all_associations.map &:check_validity! 
+    Canine.reflect_on_all_associations.map &:check_validity! 
     Aquatic::Fish.reflect_on_all_associations.map &:check_validity! 
     EatersFoodstuff.reflect_on_all_associations.map &:check_validity! 
     WildBoar.reflect_on_all_associations.map &:check_validity! 
     Frog.reflect_on_all_associations.map &:check_validity! 
-    Aquatic::Whale.reflect_on_all_associations.map &:check_validity! 
     Cat.reflect_on_all_associations.map &:check_validity! 
-    Aquatic::PupilsWhale.reflect_on_all_associations.map &:check_validity! 
+    Right.reflect_on_all_associations.map &:check_validity! 
+    Left.reflect_on_all_associations.map &:check_validity! 
+    DoubleJoin.reflect_on_all_associations.map &:check_validity! 
     BeautifulFightRelationship.reflect_on_all_associations.map &:check_validity! 
+    Person.reflect_on_all_associations.map &:check_validity! 
+    Parentship.reflect_on_all_associations.map &:check_validity! 
+    Aquatic::Whale.reflect_on_all_associations.map &:check_validity! 
+    Aquatic::PupilsWhale.reflect_on_all_associations.map &:check_validity! 
+    Tagging.reflect_on_all_associations.map &:check_validity! 
+    Recipe.reflect_on_all_associations.map &:check_validity! 
+    Category.reflect_on_all_associations.map &:check_validity! 
+    Tag.reflect_on_all_associations.map &:check_validity! 
   end
   
   def test_assignment     
