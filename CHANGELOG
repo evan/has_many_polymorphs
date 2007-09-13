@@ -1,5 +1,5 @@
 
-v2.X. :parent_conditions option; bugfix for nullified conditions; bugfix for self-referential tagging generator.
+v2.X. :parent_conditions option; bugfix for nullified conditions; bugfix for self-referential tagging generator; allow setting of has_many_polymorphs_options hash in Configuration's after_initialize if you need to adjust the autoload behavior.
 
 v2.9. Gem version renumbering; my apologies if this messes anyone up.
 

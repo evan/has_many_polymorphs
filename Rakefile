@@ -10,7 +10,7 @@ Echoe.new("has_many_polymorphs") do |p|
   p.url = "http://blog.evanweaver.com/pages/code#polymorphs"  
   p.docs_host = "blog.evanweaver.com:~/www/bax/public/files/doc/"  
   p.dependencies = ["activerecord"]
-  p.rdoc_pattern = /polymorphs\/association|polymorphs\/class_methods|polymorphs\/reflection|README|CHANGELOG|TODO|LICENSE|templates\/migration\.rb|templates\/tag\.rb|templates\/tagging\.rb|templates\/tagging_extensions\.rb/    
+  p.rdoc_pattern = /polymorphs\/association|polymorphs\/class_methods|polymorphs\/reflection|polymorphs\/configuration|README|CHANGELOG|TODO|LICENSE|templates\/migration\.rb|templates\/tag\.rb|templates\/tagging\.rb|templates\/tagging_extensions\.rb/    
 end
 
 desc 'Run the test suite.'
