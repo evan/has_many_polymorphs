@@ -358,7 +358,7 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
       
       def inject_before_save_into_join_table(association_id, reflection)
         sti_hook = "sti_class_rewrite"
-        rewrite_procedure = %[self.send(:#{association_id._singularize}_type=, self.#{association_id._singularize}_type.constantize.base_class.name)]
+        rewrite_procedure = %[self.send(:#{reflection.options[:polymorphic_type_key]}=, self.#{reflection.options[:polymorphic_type_key]}.constantize.base_class.name)]
         
         # XXX should be abstracted?
         reflection.klass.class_eval %[          
@@ -399,6 +399,8 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
               through = "#{reflection.options[:through]}#{'_as_child' if parent == self}".to_sym
               has_many(through,
                 :as => association_id._singularize, 
+#                :source => association_id._singularize, 
+#                :source_type => reflection.options[:polymorphic_type_key], 
                 :class_name => reflection.klass.name,
                 :dependent => reflection.options[:dependent], 
                 :extend => reflection.options[:join_extend],
@@ -414,13 +416,17 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
                 :through => through, 
                 :class_name => parent.name,
                 :source => reflection.options[:as], 
-                :foreign_key => reflection.options[:foreign_key] ,
+                :foreign_key => reflection.options[:foreign_key],
                 :extend => reflection.options[:parent_extend],
                 :conditions => reflection.options[:parent_conditions],
                 :order => reflection.options[:parent_order],
                 :offset => reflection.options[:parent_offset],
                 :limit => reflection.options[:parent_limit],
                 :group => reflection.options[:parent_group])
+                
+#                debugger if association == :parents
+#                
+#                nil
                       
             end                    
           end

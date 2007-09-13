@@ -4,5 +4,6 @@ class Person < ActiveRecord::Base
                       :through => :parentships, 
                       :from => [:people], 
                       :as => :parent,
+                      :polymorphic_type_key => "child_type",
                       :conditions => "people.age < 10"   
 end                                               

@@ -71,7 +71,7 @@ ActiveRecord::Schema.define(:version => 0) do
   
   create_table :parentships, :force => true do |t|
     t.column :parent_id, :integer
-    t.column :kid_type, :string
+    t.column :child_type, :string
     t.column :kid_id, :integer 
     t.column :created_at, :datetime, :null => false
     t.column :updated_at, :datetime, :null => false
