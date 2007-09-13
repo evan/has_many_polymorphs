@@ -157,6 +157,8 @@ Note that because of the way Rails reloads model classes, the plugin can sometim
 
 * http://rubyforge.org/forum/forum.php?forum_id=16450
 
+Patches and contributions are very welcome. Please note that contributors are required to assign copyright for their additions to Cloudburst, LLC.
+
 == Further resources
 
 * http://blog.evanweaver.com/articles/2007/08/15/polymorphs-tutorial
