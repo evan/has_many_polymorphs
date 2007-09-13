@@ -6,7 +6,17 @@ class Rails::Initializer #:nodoc:
 =begin rdoc    
 Searches for models that use <tt>has_many_polymorphs</tt> or <tt>acts_as_double_polymorphic_join</tt> and makes sure that they get loaded during app initialization. This ensures that helper methods are injected into the target classes. 
 
-Override DEFAULT_OPTIONS via Rails::Configuration#has_many_polymorphs_options.
+Override DEFAULT_OPTIONS via Rails::Configuration#has_many_polymorphs_options. 
+
+For example, if you need to make sure some application library is required before has_many_polymorphs loads your models, add an <tt>after_initialize</tt> block in <tt>config/environment.rb</tt>:
+  Rails::Initializer.run do |config|     
+    # your other configuration here
+    
+    config.after_initialize do
+      config.has_many_polymorphs_options['requirements'] << '/lib/my_methods'
+    end    
+  end
+  
 =end
 
   module HasManyPolymorphsAutoload
