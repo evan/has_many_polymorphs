@@ -1,3 +1,4 @@
+TODO
 test/unit/polymorph_test.rb
 test/test_helper.rb
 test/schema.rb
@@ -6,6 +7,8 @@ test/modules/extension_module.rb
 test/models/wild_boar.rb
 test/models/tabby.rb
 test/models/petfood.rb
+test/models/person.rb
+test/models/parentship.rb
 test/models/kitten.rb
 test/models/frog.rb
 test/models/eaters_foodstuff.rb
@@ -18,6 +21,7 @@ test/models/aquatic/pupils_whale.rb
 test/models/aquatic/fish.rb
 test/fixtures/wild_boars.yml
 test/fixtures/petfoods.yml
+test/fixtures/people.yml
 test/fixtures/keep_your_enemies_close.yml
 test/fixtures/frogs.yml
 test/fixtures/eaters_foodstuffs.yml
@@ -26,12 +30,16 @@ test/fixtures/bow_wows.yml
 test/fixtures/aquatic/whales.yml
 test/fixtures/aquatic/little_whale_pupils.yml
 test/fixtures/aquatic/fish.yml
+README
+Manifest
+LICENSE
 lib/has_many_polymorphs.rb
 lib/has_many_polymorphs/support_methods.rb
 lib/has_many_polymorphs/reflection.rb
 lib/has_many_polymorphs/rake_task_redefine_task.rb
 lib/has_many_polymorphs/dependencies.rb
 lib/has_many_polymorphs/debugging_tools.rb
+lib/has_many_polymorphs/configuration.rb
 lib/has_many_polymorphs/class_methods.rb
 lib/has_many_polymorphs/base.rb
 lib/has_many_polymorphs/autoload.rb
@@ -46,7 +54,4 @@ generators/tagging/templates/tag_test.rb
 generators/tagging/templates/tag.rb
 generators/tagging/templates/migration.rb
 generators/tagging/tagging_generator.rb
-TODO
-README
-LICENSE
 CHANGELOG
