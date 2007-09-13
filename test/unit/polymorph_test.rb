@@ -378,7 +378,7 @@ class PolymorphTest < Test::Unit::TestCase
     
     join = @alice.beautiful_fight_relationships_as_protector.build(:enemy_id => @spot.id, :enemy_type => @spot.class)
     
-    assert_equal join.protector_type, @alice.class.base_class.name 
+    assert_equal @alice.class.base_class.name, join.protector_type
     assert_nothing_raised { join.save! }
 
     assert join.id
