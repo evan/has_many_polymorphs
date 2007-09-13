@@ -21,6 +21,7 @@ end
 
 if defined? Rails and RAILS_ENV and RAILS_ROOT
   _logger_warn "has_many_polymorphs: Rails environment detected"
+  require 'has_many_polymorphs/configuration'
   require 'has_many_polymorphs/dependencies'
   require 'has_many_polymorphs/autoload'
 end
