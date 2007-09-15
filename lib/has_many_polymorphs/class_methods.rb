@@ -188,6 +188,7 @@ The method generates a number of associations aside from the polymorphic one. In
 <tt>:group</tt>:: An array or string of conditions for the SQL <tt>GROUP BY</tt> clause. Affects the polymorphic and individual associations.
 <tt>:limit</tt>:: An integer. Affects the polymorphic and individual associations.
 <tt>:offset</tt>:: An integer. Only affects the polymorphic association.
+<tt>:namespace</tt>:: A symbol. Prepended to all the models in the <tt>:from</tt> and <tt>:through</tt> keys. This is especially useful for Camping, which namespaces models by default.
 <tt>:uniq</tt>:: If <tt>true</tt>, the records returned are passed through a pure-Ruby <tt>uniq</tt> before they are returned. Rarely needed.
 
 If you pass a block, it gets converted to a Proc and added to <tt>:extend</tt>. 
@@ -245,6 +246,7 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
           :parent_limit,
           :parent_offset,
   #        :source,
+          :namespace,
           :uniq, # XXX untested, only applies to the polymorphic relationship
   #        :finder_sql,
   #        :counter_sql,
@@ -265,7 +267,7 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
         
         options[:association_foreign_key] = 
           options[:polymorphic_key] ||= "#{association_id._singularize}_id"
-        options[:polymorphic_type_key] ||= "#{association_id._singularize}_type"      
+        options[:polymorphic_type_key] ||= "#{association_id._singularize}_type"
         
         if options.has_key? :ignore_duplicates
           _logger_warn "DEPRECATION WARNING: please use :skip_duplicates instead of :ignore_duplicates"
@@ -278,6 +280,16 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
         # options[:finder_sql] ||= "(options[:polymorphic_key]
         
         options[:through] ||= build_join_table_symbol(association_id, (options[:as]._pluralize or self.table_name))
+        
+        # set up namespaces if we have a namespace key
+        if options[:namespace]
+          namespace = options[:namespace].to_s.chomp("/") + "/"
+          options[:from].map! do |child|
+            "#{namespace}#{child}".to_sym
+          end
+          options[:through] = "#{namespace}#{options[:through]}".to_sym
+        end
+        
         options[:join_class_name] ||= options[:through]._classify      
         options[:table_aliases] ||= build_table_aliases([options[:through]] + options[:from])
         options[:select] ||= build_select(association_id, options[:table_aliases]) 
