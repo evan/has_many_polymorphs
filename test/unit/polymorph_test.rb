@@ -118,7 +118,7 @@ class PolymorphTest < Test::Unit::TestCase
 
   def test_build_join_record_on_association
     assert_equal Kitten, @chloe.class
-    assert join = @chloe.eaters_foodstuffs.build(:foodstuff_id => @bits.id)
+    assert join = @chloe.eaters_foodstuffs.build(:foodstuff => @bits)
     # assert_equal join.eater_type, @chloe.class.name # will be STI parent type
     assert join.save!
     assert join.id
