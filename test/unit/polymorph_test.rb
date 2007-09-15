@@ -376,7 +376,7 @@ class PolymorphTest < Test::Unit::TestCase
   
   def test_double_collection_build_join_record_on_association
     
-    join = @alice.beautiful_fight_relationships_as_protector.build(:enemy_id => @spot.id, :enemy_type => @spot.class)
+    join = @alice.beautiful_fight_relationships_as_protector.build(:enemy_id => @spot.id, :enemy_type => @spot.class.name)
     
     assert_equal @alice.class.base_class.name, join.protector_type
     assert_nothing_raised { join.save! }
