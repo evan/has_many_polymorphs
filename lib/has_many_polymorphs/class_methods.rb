@@ -395,7 +395,8 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
    
       def create_join_association(association_id, reflection)
   
-        options = {:foreign_key => reflection.options[:foreign_key], 
+        options = {
+          :foreign_key => reflection.options[:foreign_key], 
           :dependent => reflection.options[:dependent], 
           :class_name => reflection.klass.name, 
           :extend => reflection.options[:join_extend]
@@ -405,15 +406,24 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
           # :conditions => devolve(association_id, reflection, reflection.options[:conditions], reflection.klass, true)
           }
           
-        #options[:as] = reflection.options[:as] if reflection.options[:is_double]
-          
         if reflection.options[:foreign_type_key]         
           type_check = "#{reflection.options[:foreign_type_key]} = #{quote_value(self.base_class.name)}"
           conjunction = options[:conditions] ? " AND " : nil
           options[:conditions] = "#{options[:conditions]}#{conjunction}#{type_check}"
+          # options[:foreign_type_key] = reflection.options[:foreign_type_key]
+          options[:as] = reflection.options[:as]
         end
-  
-        has_many(reflection.options[:through], options)      
+
+        # create reflection by hand in order to bypass valid key check
+#        join_reflection = create_reflection(:has_many, reflection.options[:through], options, self) 
+#        
+#        configure_dependency_for_has_many(join_reflection)
+#        add_multiple_associated_save_callbacks(join_reflection.name)
+#        add_association_callbacks(join_reflection.name, join_reflection.options)
+#        collection_accessor_methods(join_reflection, HasManyAssociation)
+        
+        has_many(reflection.options[:through], options)
+        
         inject_before_save_into_join_table(association_id, reflection)          
       end
       

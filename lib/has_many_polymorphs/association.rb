@@ -155,17 +155,21 @@ module ActiveRecord #:nodoc:
 
     end
     
-    class AssociationProxy #:nodoc:
-      # need to override set_belongs_to_association_for
-
-      def set_belongs_to_association_for_with_type(record)
-        set_belongs_to_association_for_without_type(record)
-#        debugger
-      end
-      
-      alias_method_chain :set_belongs_to_association_for, :type
-
-    end
+#    class AssociationProxy #:nodoc:
+#
+#      # Need to override set_belongs_to_association_for because Rails doesn't handle the :as key in a 
+#      # has_many build properly
+#      def set_belongs_to_association_for_with_type(record)
+#        set_belongs_to_association_for_without_type(record)
+#        if @reflection.options[:foreign_type_key]
+#          debugger
+#          record[@reflection.options[:foreign_type_key]] = @owner.class.base_class.name 
+#        end
+#      end
+#      
+#      alias_method_chain :set_belongs_to_association_for, :type
+#
+#    end
         
   end
 end
