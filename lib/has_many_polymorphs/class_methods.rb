@@ -20,7 +20,7 @@ There is a tentative report that you can make the parent model be its own join m
 
    module PolymorphicClassMethods
    
-     RESERVED_KEYS = [:conditions, :order, :limit, :offset, :extend, :skip_duplicates, 
+     RESERVED_DOUBLES_KEYS = [:conditions, :order, :limit, :offset, :extend, :skip_duplicates, 
                                    :join_extend, :dependent, :rename_individual_collections,
                                    :namespace] #:nodoc:
  
@@ -59,36 +59,18 @@ These options are passed through to targets on both sides of the association. If
 
 =end
 
-      def acts_as_double_polymorphic_join options={}, &extension     
+      def acts_as_double_polymorphic_join options={}, &extension      
         
-        collections = options._select {|k,v| v.is_a? Array and k.to_s !~ /(#{RESERVED_KEYS.map(&:to_s).join('|')})$/}      
-        raise PolymorphicError, "Couldn't understand options in acts_as_double_polymorphic_join. Valid parameters are your two class collections, and then #{RESERVED_KEYS.inspect[1..-2]}, with optionally your collection names prepended and joined with an underscore." unless collections.size == 2
+        collections, options = extract_double_collections(options)
         
-        options = options._select {|k,v| !collections[k]}
-        options[:extend] = (options[:extend] ? Array(options[:extend]) + [extension] : extension) if extension # inline the block
-          
-        collection_option_keys = Hash[*collections.keys.map do |key|
-          [key, RESERVED_KEYS.map{|option| "#{key}_#{option}".to_sym}] 
-        end._flatten_once]    
-      
-        collections.keys.each do |collection|      
-          options.each do |key, value|
-            next if collection_option_keys.values.flatten.include? key
-            # shift the general options to the individual sides
-            collection_value = options[collection_key = "#{collection}_#{key}".to_sym]
-            case key
-              when :conditions
-                collection_value, value = sanitize_sql(collection_value), sanitize_sql(value)
-                options[collection_key] = (collection_value ? "(#{collection_value}) AND (#{value})" : value)
-              when :order
-                options[collection_key] = (collection_value ? "#{collection_value}, #{value}" : value)
-              when :extend, :join_extend
-                options[collection_key] = Array(collection_value) + Array(value)
-              else
-                options[collection_key] ||= value
-            end     
-          end
-        end
+        # handle the block
+        options[:extend] = (if options[:extend]
+          Array(options[:extend]) + [extension]
+        else 
+          extension
+        end) if extension 
+        
+        collection_option_keys = make_general_option_keys_specific!(options, collections)
   
         join_name = self.name.tableize.to_sym
         collections.each do |association_id, children|
@@ -99,7 +81,7 @@ These options are passed through to targets on both sides of the association. If
           rescue NoMethodError
             raise PolymorphicError, "Couldn't find 'belongs_to' association for :#{parent_hash_key._singularize} in #{self.name}." unless parent_foreign_key
           end
-  
+
           parents = collections[parent_hash_key]
           conflicts = (children & parents) # set intersection          
           parents.each do |plural_parent_name| 
@@ -107,19 +89,31 @@ These options are passed through to targets on both sides of the association. If
             parent_class = plural_parent_name._as_class
             singular_reverse_association_id = parent_hash_key._singularize 
               
-            parent_class.send(:has_many_polymorphs, 
-              association_id, {:is_double => true,
-                                  :from => children, 
-                                  :as => singular_reverse_association_id,
-                                  :through => join_name.to_sym, 
-                                  :foreign_key => parent_foreign_key, 
-                                  :foreign_type_key => parent_foreign_key.to_s.sub(/_id$/, '_type'),
-                                  :singular_reverse_association_id => singular_reverse_association_id,
-                                  :conflicts => conflicts}.merge(Hash[*options._select do |key, value|
-                                    collection_option_keys[association_id].include? key and !value.nil?
-                                  end.map do |key, value|
-                                    [key.to_s[association_id.to_s.length+1..-1].to_sym, value]
-                                  end._flatten_once])) # rename side-specific options to general names
+            internal_options = {
+              :is_double => true,
+              :from => children, 
+              :as => singular_reverse_association_id,
+              :through => join_name.to_sym, 
+              :foreign_key => parent_foreign_key, 
+              :foreign_type_key => parent_foreign_key.to_s.sub(/_id$/, '_type'),
+              :singular_reverse_association_id => singular_reverse_association_id,
+              :conflicts => conflicts
+            }
+            
+            general_options = Hash[*options._select do |key, value|
+              collection_option_keys[association_id].include? key and !value.nil?
+            end.map do |key, value|
+              [key.to_s[association_id.to_s.length+1..-1].to_sym, value]
+            end._flatten_once] # rename side-specific options to general names
+            
+            general_options.each do |key, value|
+              # avoid clobbering keys that appear in both option sets
+              if internal_options[key]
+                general_options[key] = Array(value) + Array(internal_options[key])
+              end
+            end
+
+            parent_class.send(:has_many_polymorphs, association_id, internal_options.merge(general_options))
   
             if conflicts.include? plural_parent_name 
               # unify the alternate sides of the conflicting children
@@ -130,12 +124,7 @@ These options are passed through to targets on both sides of the association. If
                       self.send("#{association_id._singularize}_#{method_name}")).freeze
                   end
                 end     
-              end
-              
-              # make build method double-sided on the association proxies
-#              parent_class.send(join_name).class_eval do 
-#              
-#              end              
+              end            
               
               # unify the join model... join model is always renamed for doubles, unlike child associations
               unless parent_class.instance_methods.include?(join_name)
@@ -153,6 +142,54 @@ These options are passed through to targets on both sides of the association. If
           end
         end
       end
+      
+      private
+      
+      def extract_double_collections(options)
+        collections = options._select do |key, value| 
+          value.is_a? Array and key.to_s !~ /(#{RESERVED_DOUBLES_KEYS.map(&:to_s).join('|')})$/
+        end
+        
+        raise PolymorphicError, "Couldn't understand options in acts_as_double_polymorphic_join. Valid parameters are your two class collections, and then #{RESERVED_DOUBLES_KEYS.inspect[1..-2]}, with optionally your collection names prepended and joined with an underscore." unless collections.size == 2
+        
+        options = options._select do |key, value| 
+          !collections[key]
+        end
+        
+        [collections, options]
+      end
+      
+      def make_general_option_keys_specific!(options, collections)
+        collection_option_keys = Hash[*collections.keys.map do |key|
+          [key, RESERVED_DOUBLES_KEYS.map{|option| "#{key}_#{option}".to_sym}] 
+        end._flatten_once]    
+      
+        collections.keys.each do |collection|      
+          options.each do |key, value|
+            next if collection_option_keys.values.flatten.include? key
+            # shift the general options to the individual sides
+            collection_key = "#{collection}_#{key}".to_sym
+            collection_value = options[collection_key]
+            case key
+              when :conditions
+                collection_value, value = sanitize_sql(collection_value), sanitize_sql(value)
+                options[collection_key] = (collection_value ? "(#{collection_value}) AND (#{value})" : value)
+              when :order
+                options[collection_key] = (collection_value ? "#{collection_value}, #{value}" : value)
+              when :extend, :join_extend
+                options[collection_key] = Array(collection_value) + Array(value)
+              else
+                options[collection_key] ||= value
+            end     
+          end
+        end
+        
+        collection_option_keys
+      end
+      
+      
+      
+      public
 
 =begin rdoc
 
@@ -304,7 +341,7 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
         
         # create the reflection object      
         returning(create_reflection(:has_many_polymorphs, association_id, options, self)) do |reflection|
-          if defined? Dependencies and RAILS_ENV == "development"                    
+          if defined? Dependencies and defined? RAILS_ENV and RAILS_ENV == "development"                    
             inject_dependencies(association_id, reflection) if Dependencies.mechanism == :load
           end
           
@@ -366,7 +403,9 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
           # :offset => reflection.options[:offset],
           # :order => devolve(association_id, reflection, reflection.options[:order], reflection.klass, true),
           # :conditions => devolve(association_id, reflection, reflection.options[:conditions], reflection.klass, true)
-          }        
+          }
+          
+        #options[:as] = reflection.options[:as] if reflection.options[:is_double]
           
         if reflection.options[:foreign_type_key]         
           type_check = "#{reflection.options[:foreign_type_key]} = #{quote_value(self.base_class.name)}"
