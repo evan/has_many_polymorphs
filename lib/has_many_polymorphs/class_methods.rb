@@ -21,7 +21,8 @@ There is a tentative report that you can make the parent model be its own join m
    module PolymorphicClassMethods
    
      RESERVED_KEYS = [:conditions, :order, :limit, :offset, :extend, :skip_duplicates, 
-                                   :join_extend, :dependent, :rename_individual_collections] #:nodoc:
+                                   :join_extend, :dependent, :rename_individual_collections,
+                                   :namespace] #:nodoc:
  
 =begin rdoc
 
@@ -54,7 +55,8 @@ These options are passed through to targets on both sides of the association. If
 <tt>:order</tt>:: A string for the SQL <tt>ORDER BY</tt> clause.
 <tt>:limit</tt>:: An integer. Affects the polymorphic and individual associations.
 <tt>:offset</tt>:: An integer. Only affects the polymorphic association.
-  
+<tt>:namespace</tt>:: A symbol. Prepended to all the models in the <tt>:from</tt> and <tt>:through</tt> keys. This is especially useful for Camping, which namespaces models by default.
+
 =end
 
       def acts_as_double_polymorphic_join options={}, &extension     
@@ -82,10 +84,8 @@ These options are passed through to targets on both sides of the association. If
                 options[collection_key] = (collection_value ? "#{collection_value}, #{value}" : value)
               when :extend, :join_extend
                 options[collection_key] = Array(collection_value) + Array(value)
-              when :limit, :offset, :dependent, :rename_individual_collections, :skip_duplicates
-                options[collection_key] ||= value
               else
-                raise PolymorphicError, "Unknown option key #{key.inspect}."
+                options[collection_key] ||= value
             end     
           end
         end
