@@ -560,8 +560,15 @@ class PolymorphTest < Test::Unit::TestCase
       end" }
     assert_raises(@association_error) {
       eval "class SomeModel < ActiveRecord::Base
-       acts_as_double_polymorphic_join :polymorph => [:dogs, :cats], :unimorphs => [:dogs, :cats]
+        acts_as_double_polymorphic_join :polymorph => [:dogs, :cats], :unimorphs => [:dogs, :cats]
       end" }    
+  end
+  
+  def test_error_message_on_namespaced_targets
+    assert_raises(@association_error) {
+      eval "class SomeModel < ActiveRecord::Base
+        has_many_polymorphs :polymorphs, :from => [:fish]
+      end" }
   end
 
   def test_single_custom_finders

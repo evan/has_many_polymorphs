@@ -270,9 +270,9 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
         options[:dependent] = :destroy unless options.has_key? :dependent
         options[:conditions] = sanitize_sql(options[:conditions])
         
-  #      options[:finder_sql] ||= "(options[:polymorphic_key]
-  
-        options[:through] ||= build_join_table_symbol((options[:as]._pluralize or self.table_name), association_id)
+        # options[:finder_sql] ||= "(options[:polymorphic_key]
+        
+        options[:through] ||= build_join_table_symbol(association_id, (options[:as]._pluralize or self.table_name))
         options[:join_class_name] ||= options[:through]._classify      
         options[:table_aliases] ||= build_table_aliases([options[:through]] + options[:from])
         options[:select] ||= build_select(association_id, options[:table_aliases]) 
@@ -306,7 +306,11 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
         # for the targets
         returning({}) do |aliases|
           from.map(&:to_s).sort.map(&:to_sym).each_with_index do |plural, t_index|
-            table = plural._as_class.table_name
+            begin
+              table = plural._as_class.table_name
+            rescue NameError => e
+              raise PolymorphicError, "Could not find a valid class for #{plural.inspect}. If it's namespaced, be sure to specify it as :\"module/#{plural}\" instead."
+            end
             plural._as_class.columns.map(&:name).each_with_index do |field, f_index|
               aliases["#{table}.#{field}"] = "t#{t_index}_r#{f_index}"
             end
@@ -471,8 +475,8 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
         end
       end
   
-      # some support methods    
-      
+      # some support methods
+            
       def child_pluralization_map(association_id, reflection)
         Hash[*reflection.options[:from].map do |plural|
           [plural,  plural._singularize]
@@ -489,8 +493,8 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
         s.to_s.gsub('/', '_').to_sym
       end
               
-      def build_join_table_symbol(a, b)
-        [a.to_s, b.to_s].sort.join("_").to_sym
+      def build_join_table_symbol(association_id, name)
+        [name.to_s, association_id.to_s].sort.join("_").to_sym
       end
       
       def all_classes_for(association_id, reflection)
