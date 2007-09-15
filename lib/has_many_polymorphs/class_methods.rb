@@ -132,6 +132,11 @@ These options are passed through to targets on both sides of the association. If
                 end     
               end
               
+              # make build method double-sided on the association proxies
+#              parent_class.send(join_name).class_eval do 
+#              
+#              end              
+              
               # unify the join model... join model is always renamed for doubles, unlike child associations
               unless parent_class.instance_methods.include?(join_name)
                 parent_class.send(:define_method, join_name) do
