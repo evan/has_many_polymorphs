@@ -282,6 +282,7 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
         options[:through] ||= build_join_table_symbol(association_id, (options[:as]._pluralize or self.table_name))
         
         # set up namespaces if we have a namespace key
+        # XXX needs test coverage
         if options[:namespace]
           namespace = options[:namespace].to_s.chomp("/") + "/"
           options[:from].map! do |child|
