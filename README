@@ -7,6 +7,8 @@ An ActiveRecord plugin for self-referential and double-sided polymorphic associa
 
 Copyright 2007 Cloudburst, LLC. Licensed under the AFL 3. See the included LICENSE file. 
 
+The public certificate for this gem is at http://rubyforge.org/frs/download.php/25331/evan_weaver-original-public_cert.pem.
+
 == Description
 
 This plugin lets you define self-referential and double-sided polymorphic associations in your models. It is an extension of <tt>has_many :through</tt>.
