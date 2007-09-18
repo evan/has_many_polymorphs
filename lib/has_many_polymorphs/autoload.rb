@@ -32,7 +32,7 @@ Note that you can override DEFAULT_OPTIONS via Rails::Configuration#has_many_pol
     def after_initialize_with_autoload
       after_initialize_without_autoload
 
-      _logger_debug "has_many_polymorphs: autoload hook invoked"
+      _logger_debug "autoload hook invoked"
       
       HasManyPolymorphsAutoload.options[:requirements].each do |requirement|
         require requirement
@@ -44,10 +44,10 @@ Note that you can override DEFAULT_OPTIONS via Rails::Configuration#has_many_pol
           if file.grep(/#{HasManyPolymorphsAutoload.options[:methods].join("|")}/).any?
             begin
               model = File.basename(filename)[0..-4].camelize
-              _logger_warn "has_many_polymorphs: preloading parent model #{model}"
+              _logger_warn "preloading parent model #{model}"
               model.constantize
             rescue Object => e
-              _logger_warn "has_many_polymorphs: WARNING; possibly critical error preloading #{model}: #{e.inspect}"
+              _logger_warn "WARNING; possibly critical error preloading #{model}: #{e.inspect}"
             end
           end
         end

@@ -31,6 +31,8 @@ Turns on Rails' default dependency logging.
 
 =end
 
+_logger_warn "debug mode enabled"
+
 class << ActiveRecord::Base
   COLLECTION_METHODS = [:belongs_to, :has_many, :has_and_belongs_to_many, :has_one, 
       :has_many_polymorphs, :acts_as_double_polymorphic_join].each do |method_name|

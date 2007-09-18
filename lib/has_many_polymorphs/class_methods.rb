@@ -239,7 +239,7 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
 =end
 
       def has_many_polymorphs (association_id, options = {}, &extension)
-        _logger_debug "has_many_polymorphs: associating #{self}.#{association_id}"
+        _logger_debug "associating #{self}.#{association_id}"
         reflection = create_has_many_polymorphs_reflection(association_id, options, &extension)
         # puts "Created reflection #{reflection.inspect}"
         # configure_dependency_for_has_many(reflection)
@@ -384,7 +384,7 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
   
       # model caching         
       def inject_dependencies(association_id, reflection)
-        _logger_debug "has_many_polymorphs: injecting dependencies"
+        _logger_debug "injecting dependencies"
         requirements = [self, reflection.klass].map{|klass| [klass, klass.base_class]}.flatten.uniq
         (all_classes_for(association_id, reflection) - requirements).each do |target_klass|
           Dependencies.inject_dependency(target_klass, *requirements)        
@@ -565,7 +565,7 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
         # XXX remove_inappropriate_clauses is not implemented; we'll wait until someone actually needs it
         return unless string
         string = string.dup
-        # _logger_debug "has_many_polymorphs: devolving #{string} for #{klass}"
+        # _logger_debug "devolving #{string} for #{klass}"
         inappropriate_classes = (all_classes_for(association_id, reflection) - # the join class must always be preserved
           [klass, klass.base_class, reflection.klass, reflection.klass.base_class])
         inappropriate_classes.map do |klass|
@@ -579,7 +579,7 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
           # XXX clause removal would go here 
           string.gsub!(quoted_reference, "NULL")
         end
-        # _logger_debug "has_many_polymorphs: altered to #{string}"
+        # _logger_debug "altered to #{string}"
         string
       end
       
