@@ -208,10 +208,6 @@ The method generates a number of associations aside from the polymorphic one. In
 <tt>:from</tt>:: An array of symbols representing the target models. Required.
 <tt>:as</tt>:: A symbol for the parent's interface in the join--what the parent 'acts as'.
 <tt>:through</tt>:: A symbol representing the class of the join model. Follows Rails defaults if not supplied (the parent and the association names, alphabetized, concatenated with an underscore, and singularized).
-<tt>:foreign_key</tt>:: The column name for the parent's id in the join. 
-<tt>:foreign_type_key</tt>:: The column name for the parent's class name in the join, if the parent itself is polymorphic. Rarely needed.
-<tt>:polymorphic_key</tt>:: The column name for the child's id in the join.
-<tt>:polymorphic_type_key</tt>:: The column name for the child's class name in the join.
 <tt>:dependent</tt>:: Accepts <tt>:destroy</tt>, <tt>:nullify</tt>, <tt>:delete_all</tt>. Controls how the join record gets treated on any associate delete (whether from the polymorph or from an individual collection); defaults to <tt>:destroy</tt>.
 <tt>:skip_duplicates</tt>:: If <tt>true</tt>, will check to avoid pushing already associated records (but also triggering a database load). Defaults to <tt>true</tt>.
 <tt>:rename_individual_collections</tt>:: If <tt>true</tt>, all individual collections are prepended with the polymorph name, and the children's parent collection is appended with "_of_#{association_name}"</tt>. For example, <tt>zoos</tt> becomes <tt>zoos_of_animals</tt>. This is to help avoid method name collisions in crowded classes.
@@ -227,6 +223,10 @@ The method generates a number of associations aside from the polymorphic one. In
 <tt>:offset</tt>:: An integer. Only affects the polymorphic association.
 <tt>:namespace</tt>:: A symbol. Prepended to all the models in the <tt>:from</tt> and <tt>:through</tt> keys. This is especially useful for Camping, which namespaces models by default.
 <tt>:uniq</tt>:: If <tt>true</tt>, the records returned are passed through a pure-Ruby <tt>uniq</tt> before they are returned. Rarely needed.
+<tt>:foreign_key</tt>:: The column name for the parent's id in the join. 
+<tt>:foreign_type_key</tt>:: The column name for the parent's class name in the join, if the parent itself is polymorphic. Rarely needed--if you're thinking about using this, you almost certainly want to use <tt>acts_as_double_polymorphic_join()</tt> instead.
+<tt>:polymorphic_key</tt>:: The column name for the child's id in the join.
+<tt>:polymorphic_type_key</tt>:: The column name for the child's class name in the join.
 
 If you pass a block, it gets converted to a Proc and added to <tt>:extend</tt>. 
 
