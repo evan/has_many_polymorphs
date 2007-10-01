@@ -1,5 +1,5 @@
 
-require 'initializer'
+require 'initializer' unless defined? Rails::Initializer
 
 class Rails::Initializer #:nodoc:
 
