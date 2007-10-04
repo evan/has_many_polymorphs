@@ -6,20 +6,23 @@ begin
 rescue Object
 end
 
-# load the applicaiton's test helper
-begin
-  require File.dirname(__FILE__) + '/../../../../test/test_helper' 
-rescue LoadError
-  require '~/projects/miscellaneous/cookbook/test/test_helper'
-end
+HERE = File.expand_path(File.dirname(__FILE__))
+$LOAD_PATH << HERE
 
-WORKING_DIR = File.dirname(__FILE__)
+# require 'integration/app/config/environment'
+require 'integration/app/test/test_helper'
+
+def silently
+  stderr, $stderr = $stderr, StringIO.new
+  yield
+  $stderr = stderr
+end
 
 Inflector.inflections {|i| i.irregular 'fish', 'fish' }
 
-$LOAD_PATH.unshift(Test::Unit::TestCase.fixture_path = WORKING_DIR + "/fixtures")
-$LOAD_PATH.unshift(WORKING_DIR + "/models")
-$LOAD_PATH.unshift(WORKING_DIR + "/modules")
+$LOAD_PATH.unshift(Test::Unit::TestCase.fixture_path = HERE + "/fixtures")
+$LOAD_PATH.unshift(HERE + "/models")
+$LOAD_PATH.unshift(HERE + "/modules")
 
 class Test::Unit::TestCase
   self.use_transactional_fixtures = !(ActiveRecord::Base.connection.is_a? ActiveRecord::ConnectionAdapters::MysqlAdapter rescue false)
@@ -27,5 +30,4 @@ class Test::Unit::TestCase
 end
 
 # test schema
-load(File.dirname(__FILE__) + "/schema.rb")
-
+load(HERE + "/schema.rb")
