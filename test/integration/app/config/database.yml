@@ -2,20 +2,20 @@
 development:
   adapter: mysql
   host: localhost
-  database: app_development
+  database: hmp_development
   username: root
   password:
 
 test:
   adapter: mysql
   host: localhost
-  database: app_test
+  database: hmp_test
   username: root
   password:
 
 production:
   adapter: mysql
   host: localhost
-  database: app_production
+  database: hmp_production
   username: root
   password: 
