@@ -19,8 +19,7 @@ class PolymorphTest < Test::Unit::TestCase
   set_fixture_class :little_whale_pupils => Aquatic::PupilsWhale
   
   fixtures :cats, :bow_wows, :frogs, :wild_boars, :eaters_foodstuffs, :petfoods,
-              :fish, :whales, :little_whale_pupils,
-              :keep_your_enemies_close, :people   
+              :fish, :whales, :little_whale_pupils, :keep_your_enemies_close, :people   
         
   def setup
    @association_error = ActiveRecord::Associations::PolymorphicError
