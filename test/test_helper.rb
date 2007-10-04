@@ -30,4 +30,6 @@ class Test::Unit::TestCase
 end
 
 # test schema
-load(HERE + "/schema.rb")
+silently do
+  load(HERE + "/schema.rb")
+end
