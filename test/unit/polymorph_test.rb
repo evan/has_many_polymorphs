@@ -27,13 +27,7 @@ class PolymorphTest < Test::Unit::TestCase
 
    @double_join_count = BeautifulFightRelationship.count
    @n = @alice.enemies.size
-  end
-  
-  def d
-    require 'ruby-debug'
-    Debugger.start
-    debugger
-  end
+  end  
   
   def test_all_relationship_validities
     # q = []
