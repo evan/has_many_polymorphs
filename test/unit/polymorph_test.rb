@@ -1,11 +1,26 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
+require 'dog'
+require 'wild_boar'
+require 'frog'
+require 'cat'
+require 'kitten'
+require 'aquatic/whale'
+require 'aquatic/fish'
+require 'aquatic/pupils_whale'
+require 'beautiful_fight_relationship' 
+
 class PolymorphTest < Test::Unit::TestCase
   
+  set_fixture_class :bow_wows => Dog
+  set_fixture_class :keep_your_enemies_close => BeautifulFightRelationship
+  set_fixture_class :whales => Aquatic::Whale
+  set_fixture_class :fish => Aquatic::Fish
+  set_fixture_class :little_whale_pupils => Aquatic::PupilsWhale
+  
   fixtures :cats, :bow_wows, :frogs, :wild_boars, :eaters_foodstuffs, :petfoods,
-              :"aquatic/fish", :"aquatic/whales", :"aquatic/little_whale_pupils",
-              :keep_your_enemies_close, :people
-  require 'beautiful_fight_relationship'  
+              :fish, :whales, :little_whale_pupils,
+              :keep_your_enemies_close, :people   
         
   def setup
    @association_error = ActiveRecord::Associations::PolymorphicError
