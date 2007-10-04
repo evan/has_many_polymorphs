@@ -36,11 +36,11 @@ class PolymorphTest < Test::Unit::TestCase
    @froggy = Frog.find(1)
 
    @join_count = EatersFoodstuff.count    
-   @l = @kibbles.eaters.size
-   @m = @bits.eaters.size
+   @kibbles_eaters_count = @kibbles.eaters.size
+   @bits_eaters_count = @bits.eaters.size
 
    @double_join_count = BeautifulFightRelationship.count
-   @n = @alice.enemies.size
+   @alice_enemies_count = @alice.enemies.size
   end  
   
   def test_all_relationship_validities
@@ -67,10 +67,10 @@ class PolymorphTest < Test::Unit::TestCase
   def test_assignment     
     assert @kibbles.eaters.blank?
     assert @kibbles.eaters.push(Cat.find_by_name('Chloe'))
-    assert_equal @l += 1, @kibbles.eaters.count
+    assert_equal @kibbles_eaters_count += 1, @kibbles.eaters.count
 
     @kibbles.reload
-    assert_equal @l, @kibbles.eaters.count    
+    assert_equal @kibbles_eaters_count, @kibbles.eaters.count    
   end
   
   def test_duplicate_assignment
@@ -78,19 +78,19 @@ class PolymorphTest < Test::Unit::TestCase
     @kibbles.eaters.push(@alice)
     assert @kibbles.eaters.include?(@alice)
     @kibbles.eaters.push(@alice)
-    assert_equal @l + 2, @kibbles.eaters.count
+    assert_equal @kibbles_eaters_count + 2, @kibbles.eaters.count
     assert_equal @join_count + 2, EatersFoodstuff.count
   end
   
   def test_create_and_push
     assert @kibbles.eaters.push(@spot)  
-    assert_equal @l += 1, @kibbles.eaters.count
+    assert_equal @kibbles_eaters_count += 1, @kibbles.eaters.count
     assert @kibbles.eaters << @rover
     assert @kibbles.eaters << Kitten.create(:name => "Miranda")
-    assert_equal @l += 2, @kibbles.eaters.length
+    assert_equal @kibbles_eaters_count += 2, @kibbles.eaters.length
 
     @kibbles.reload
-    assert_equal @l, @kibbles.eaters.length   
+    assert_equal @kibbles_eaters_count, @kibbles.eaters.length   
     
     # test that ids and new flags were set appropriately
     assert_not_nil @kibbles.eaters[0].id
@@ -109,8 +109,8 @@ class PolymorphTest < Test::Unit::TestCase
     assert join.id
     assert_equal @join_count + 1, EatersFoodstuff.count
 
-    #assert_equal @m, @bits.eaters.size # Doesn't behave this way on latest edge anymore
-    assert_equal @m + 1, @bits.eaters.count # SQL
+    #assert_equal @bits_eaters_count, @bits.eaters.size # Doesn't behave this way on latest edge anymore
+    assert_equal @bits_eaters_count + 1, @bits.eaters.count # SQL
 
     # reload; is the new association there?
     assert @bits.eaters.reload
@@ -134,17 +134,17 @@ class PolymorphTest < Test::Unit::TestCase
 #    # add an unsaved item
 #    assert @bits.eaters << Kitten.new(:name => "Bridget")
 #    assert_nil Kitten.find_by_name("Bridget")
-#    assert_equal @m + 1, @bits.eaters.count
+#    assert_equal @bits_eaters_count + 1, @bits.eaters.count
 #
 #    assert @bits.save
 #    @bits.reload
-#    assert_equal @m + 1, @bits.eaters.count
+#    assert_equal @bits_eaters_count + 1, @bits.eaters.count
 #    
 #  end
   
   def test_self_reference
     assert @kibbles.eaters << @bits
-    assert_equal @l += 1, @kibbles.eaters.count
+    assert_equal @kibbles_eaters_count += 1, @kibbles.eaters.count
     assert @kibbles.eaters.include?(@bits)
     @kibbles.reload
     assert @kibbles.foodstuffs_of_eaters.blank?
@@ -158,7 +158,7 @@ class PolymorphTest < Test::Unit::TestCase
     assert @kibbles.eaters << @chloe
     @kibbles.reload
     assert @kibbles.eaters.delete(@kibbles.eaters[0])
-    assert_equal @l, @kibbles.eaters.count
+    assert_equal @kibbles_eaters_count, @kibbles.eaters.count
   end
   
   def test_destroy
@@ -167,7 +167,7 @@ class PolymorphTest < Test::Unit::TestCase
     assert @kibbles.eaters.length > 0
     assert @kibbles.eaters[0].destroy
     @kibbles.reload
-    assert_equal @l, @kibbles.eaters.count
+    assert_equal @kibbles_eaters_count, @kibbles.eaters.count
   end
 
   def test_clear
@@ -234,7 +234,7 @@ class PolymorphTest < Test::Unit::TestCase
   
   def test_self_referential_join_tables
     # check that the self-reference join tables go the right ways
-    assert_equal @l, @kibbles.eaters_foodstuffs.count
+    assert_equal @kibbles_eaters_count, @kibbles.eaters_foodstuffs.count
     assert_equal @kibbles.eaters_foodstuffs.count, @kibbles.eaters_foodstuffs_as_child.count
   end
 
