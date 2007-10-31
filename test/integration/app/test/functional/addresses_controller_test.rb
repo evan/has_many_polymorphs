@@ -26,7 +26,7 @@ class AddressesControllerTest < Test::Unit::TestCase
 
   def test_should_create_address
     assert_difference('Address.count') do
-      post :create, :address => { }
+      post :create, :address => { :country_id => 1, :user_id => 1, :state_id => 1}
     end
 
     assert_redirected_to address_path(assigns(:address))

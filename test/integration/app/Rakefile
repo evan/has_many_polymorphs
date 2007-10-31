@@ -8,3 +8,12 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 
 require 'tasks/rails'
+
+namespace :test do
+  desc "a new rake task to include generators"
+  Rake::TestTask.new(:generators) do |t|
+    t.libs << 'lib'
+    t.test_files = FileList['test/generators/*_test.rb']
+    t.verbose = true
+  end
+end
