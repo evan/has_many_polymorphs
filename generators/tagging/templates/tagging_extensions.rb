@@ -67,10 +67,6 @@ class ActiveRecord::Base #:nodoc:
       #:startdoc:
     end
     
-    #:stopdoc:
-    alias :<%= parent_association_name -%>s= :tag_with
-    #:startdoc:
-    
     private 
     
     def tag_cast_to_string obj #:nodoc:
