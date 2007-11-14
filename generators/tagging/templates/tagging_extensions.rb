@@ -26,13 +26,13 @@ class ActiveRecord::Base #:nodoc:
       outgoing = tag_cast_to_string(outgoing)
   <% if options[:self_referential] %>  
       # because of http://dev.rubyonrails.org/ticket/6466
-      taggings.destroy(taggings.find(:all, :include => :<%= parent_association_name -%>).select do |tagging| 
+      taggings.destroy(*(taggings.find(:all, :include => :<%= parent_association_name -%>).select do |tagging| 
         outgoing.include? tagging.<%= parent_association_name -%>.name
-      end)
+      end))
   <% else -%>   
-      <%= parent_association_name -%>s.delete(<%= parent_association_name -%>s.select do |tag|
+      <%= parent_association_name -%>s.delete(*(<%= parent_association_name -%>s.select do |tag|
         outgoing.include? tag.name    
-      end)
+      end))
   <% end -%>
     end
 
