@@ -13,12 +13,19 @@ Echoe.new("has_many_polymorphs") do |p|
   p.test_pattern = ["test/integration/*.rb", "test/unit/*.rb"]
 end
 
-desc "Run all the tests in production and development mode both"
+desc "Run all the tests for every database adapter" 
 task "test_all" do
-  STDERR.puts "#{'='*80}\nDevelopment mode\n#{'='*80}"
-  system("rake test:multi_rails:all")
-
-  ENV['PRODUCTION'] = '1'
-  STDERR.puts "#{'='*80}\nProduction mode\n#{'='*80}"
-  system("rake test:multi_rails:all")
+  ['mysql', 'postgresql', 'sqlite3'].each do |adapter|
+    ENV['DB'] = adapter
+    ENV['PRODUCTION'] = nil
+    STDERR.puts "#{'='*80}\nDevelopment mode for #{adapter}\n#{'='*80}"
+    system("rake test:multi_rails:all")
+  
+    # XXX Right now we don't test anything that depends on this, although we should
+    #
+    # ENV['PRODUCTION'] = '1'
+    # STDERR.puts "#{'='*80}\nProduction mode for #{adapter}\n#{'='*80}"
+    # system("rake test:multi_rails:all")
+    
+  end
 end
