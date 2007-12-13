@@ -1,22 +1,16 @@
 
-begin
-  require 'rubygems'
-  require 'ruby-debug' 
-  Debugger.start
-rescue Object
-end
+$VERBOSE = nil
+require 'rubygems'
+require 'echoe'
+require 'test/unit'
+require 'multi_rails_init'
+require 'ruby-debug'
 
 HERE = File.expand_path(File.dirname(__FILE__))
 $LOAD_PATH << HERE
 
-# require 'integration/app/config/environment'
-require 'integration/app/test/test_helper'
-
-def silently
-  stderr, $stderr = $stderr, StringIO.new
-  yield
-  $stderr = stderr
-end
+require 'integration/app/config/environment'
+require 'test_help'
 
 Inflector.inflections {|i| i.irregular 'fish', 'fish' }
 
@@ -29,7 +23,6 @@ class Test::Unit::TestCase
   self.use_instantiated_fixtures  = false
 end
 
-# test schema
-silently do
+Echoe.silence do
   load(HERE + "/schema.rb")
 end

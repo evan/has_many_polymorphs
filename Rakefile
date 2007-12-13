@@ -1,8 +1,6 @@
 
-require 'rubygems'
-gem 'echoe', '>=2.2'
 require 'echoe'
-require 'lib/has_many_polymorphs/rake_task_redefine_task'
+require 'load_multi_rails_rake_tasks'
 
 Echoe.new("has_many_polymorphs") do |p|  
   p.project = "fauna"
@@ -12,10 +10,15 @@ Echoe.new("has_many_polymorphs") do |p|
   p.dependencies = ["activerecord"]
   p.rdoc_pattern = /polymorphs\/association|polymorphs\/class_methods|polymorphs\/reflection|polymorphs\/autoload|polymorphs\/configuration|README|CHANGELOG|TODO|LICENSE|templates\/migration\.rb|templates\/tag\.rb|templates\/tagging\.rb|templates\/tagging_extensions\.rb/    
   p.require_signed = true
+  p.test_pattern = ["test/integration/*.rb", "test/unit/*.rb"]
 end
 
-desc 'Run the test suite.'
-Rake::Task.redefine_task("test") do
-   puts "Warning! Tests must be run with the plugin installed in a functioning Rails\nenvironment."
-   system "ruby -Ibin:lib:test test/unit/polymorph_test.rb #{ENV['METHOD'] ? "--name=#{ENV['METHOD']}" : ""}"
+desc "Run all the tests in production and development mode both"
+task "test_all" do
+  STDERR.puts "#{'='*80}\nDevelopment mode\n#{'='*80}"
+  system("rake test:multi_rails:all")
+
+  ENV['PRODUCTION'] = '1'
+  STDERR.puts "#{'='*80}\nProduction mode\n#{'='*80}"
+  system("rake test:multi_rails:all")
 end

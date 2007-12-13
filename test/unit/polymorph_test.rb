@@ -46,22 +46,22 @@ class PolymorphTest < Test::Unit::TestCase
   def test_all_relationship_validities
     # q = []
     # ObjectSpace.each_object(Class){|c| q << c if c.ancestors.include? ActiveRecord::Base }
-    # q.each{|c| puts "#{c.name}.reflect_on_all_associations.map &:check_validity! "}
-    Petfood.reflect_on_all_associations.map &:check_validity! 
-    Tabby.reflect_on_all_associations.map &:check_validity! 
-    Kitten.reflect_on_all_associations.map &:check_validity! 
-    Dog.reflect_on_all_associations.map &:check_validity! 
-    Canine.reflect_on_all_associations.map &:check_validity! 
-    Aquatic::Fish.reflect_on_all_associations.map &:check_validity! 
-    EatersFoodstuff.reflect_on_all_associations.map &:check_validity! 
-    WildBoar.reflect_on_all_associations.map &:check_validity! 
-    Frog.reflect_on_all_associations.map &:check_validity! 
-    Cat.reflect_on_all_associations.map &:check_validity! 
-    BeautifulFightRelationship.reflect_on_all_associations.map &:check_validity! 
-    Person.reflect_on_all_associations.map &:check_validity! 
-    Parentship.reflect_on_all_associations.map &:check_validity! 
-    Aquatic::Whale.reflect_on_all_associations.map &:check_validity! 
-    Aquatic::PupilsWhale.reflect_on_all_associations.map &:check_validity! 
+    # q.each{|c| puts "#{c.name}.reflect_on_all_associations.map(&:check_validity!)"}
+    Petfood.reflect_on_all_associations.map(&:check_validity!)
+    Tabby.reflect_on_all_associations.map(&:check_validity!)
+    Kitten.reflect_on_all_associations.map(&:check_validity!)
+    Dog.reflect_on_all_associations.map(&:check_validity!)
+    Canine.reflect_on_all_associations.map(&:check_validity!)
+    Aquatic::Fish.reflect_on_all_associations.map(&:check_validity!)
+    EatersFoodstuff.reflect_on_all_associations.map(&:check_validity!)
+    WildBoar.reflect_on_all_associations.map(&:check_validity!)
+    Frog.reflect_on_all_associations.map(&:check_validity!)
+    Cat.reflect_on_all_associations.map(&:check_validity!)
+    BeautifulFightRelationship.reflect_on_all_associations.map(&:check_validity!)
+    Person.reflect_on_all_associations.map(&:check_validity!)
+    Parentship.reflect_on_all_associations.map(&:check_validity!)
+    Aquatic::Whale.reflect_on_all_associations.map(&:check_validity!)
+    Aquatic::PupilsWhale.reflect_on_all_associations.map(&:check_validity!)
   end
   
   def test_assignment     
