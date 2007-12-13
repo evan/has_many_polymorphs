@@ -127,12 +127,11 @@ class ActiveRecord::Base #:nodoc:
       
       tag_list_condition = tag_list.map {|t| "'#{t}'"}.join(", ")
       
-      sql << "AND (tags.name IN (#{tag_list_condition})) "
+      sql << "AND (tags.name IN (#{sanitize_sql(tag_list_condition)})) "
       sql << "AND #{sanitize_sql(options[:conditions])} " if options[:conditions]
       sql << "GROUP BY #{table_name}.id "
       sql << "HAVING COUNT(taggings.tag_id) = #{tag_list.size}"
       
-      add_group!(sql, options[:group], scope)
       add_order!(sql, options[:order], scope)
       add_limit!(sql, options, scope)
       add_lock!(sql, options, scope)
