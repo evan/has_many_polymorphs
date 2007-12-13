@@ -1,5 +1,5 @@
 
-v2.12. Verify Rails 2.0.1 compatibility with multi_rails.
+vSVN. Verify Rails 2.0.1 compatibility with multi_rails.
 
 v2.11. Rails 1.2.6 tagging generator compatibility; change test suite to use included integration app; include commenting generator (not well tested) [Josh Stephenson].
 
