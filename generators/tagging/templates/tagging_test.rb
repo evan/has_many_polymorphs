@@ -19,6 +19,21 @@ class TaggingTest < Test::Unit::TestCase
     assert_equal "columbian dark", @obj2.tag_list
   end
   
+  def test_find_tagged_with
+    @obj1.tag_with "ruby perl php"
+    @obj2.tag_with ["perl", "java", "fcuk", "ruby"]
+    
+    result1 = [@obj1]
+    assert_equal <%= model_two %>.tagged_with("php"), result1
+    assert_equal <%= model_two %>.tagged_with("php perl"), result1
+    assert_equal <%= model_two %>.tagged_with("php", "perl"), result1
+    
+    result2 = [@obj1.id, @obj2.id].sort
+    assert_equal <%= model_two %>.tagged_with("ruby").map(&:id).sort, result2
+    assert_equal <%= model_two %>.tagged_with("ruby perl").map(&:id).sort, result2
+    assert_equal <%= model_two %>.tagged_with("ruby", "perl").map(&:id).sort, result2
+  end
+  
 <% if options[:self_referential] -%>  
   def test_self_referential_tag_with
     @tag1.tag_with [1, 2]
