@@ -12,7 +12,7 @@ class TaggingGeneratorTest < Test::Unit::TestCase
     generate_model("Pop")
     
     # Run tagging generator
-    generate("tagging", "Rock", "Pop", "-q", "-f")
+    generate("tagging", "Rock", "Pop")
     
     # Delete existing migrations and migrate again
     migrate
