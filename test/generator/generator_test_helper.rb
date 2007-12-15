@@ -10,7 +10,7 @@ class Test::Unit::TestCase
 
   def setup_test_environment    
     in_rails do
-      ["db/migrate", "app/models", "test/fixtures", "test/unit", "integration/app/lib/*_extensions.rb"].each do |dir|
+      ["db/migrate", "app/models", "test/fixtures", "test/unit", "lib/*_extensions.rb"].each do |dir|
         FileUtils.rm_rf dir
       end
       system("rake db:drop")
