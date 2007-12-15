@@ -17,7 +17,7 @@ class Test::Unit::TestCase
       system("rake db:create")
       # Revert environment lib requires
       FileUtils.cp "config/environment.rb.canonical", "config/environment.rb"
-      system("touch log/development.log")
+      system("mkdir log; touch log/development.log")
     end
   end
   
