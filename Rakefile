@@ -28,3 +28,12 @@ task "test_all" do
     
   end
 end
+
+namespace :test do
+  Rake::TestTask.new(:generator) do |t|
+    t.libs << "test"
+    t.pattern = 'test/generator/*_test.rb'
+    t.verbose = true
+  end
+  Rake::Task['test:generator'].comment = "Run generator tests in real application"
+end

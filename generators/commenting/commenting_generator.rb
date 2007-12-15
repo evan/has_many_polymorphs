@@ -6,6 +6,8 @@ class CommentingGenerator < Rails::Generator::NamedBase
   attr_reader :commentable_models
 
   def initialize(runtime_args, runtime_options = {})
+    parse!(runtime_args, runtime_options)
+    
     @parent_association_name = (runtime_args.include?("--self-referential") ? "commenter" : "comment")
     @commentable_models = runtime_args.reject{|opt| opt =~ /^--/}.map do |commentable|
       ":" + commentable.underscore.pluralize
