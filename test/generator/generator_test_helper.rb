@@ -26,9 +26,8 @@ class Test::Unit::TestCase
   end
   
   def generate_model(name)
-    Object.send(:remove_const, name) if Object.const_defined?(name)
     @generated_models ||= []
-    Rails::Generator::Scripts::Generate.new.run(["model", name, "name:string", "-q", "-f"])
+    system("script/generate model #{name} name:string -q -f")
     load "#{name.downcase}.rb"
     @generated_models << name
   end
