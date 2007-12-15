@@ -10,13 +10,11 @@ class Test::Unit::TestCase
 
   def setup_test_environment    
     in_rails do
-      ENV['SCHEMA'] = RAILS_ROOT + "/db/schema.rb"
-      
-      system("rake db:drop")
-      system("rake db:create")
       ["db/migrate", "app/models", "test/fixtures", "test/unit", "integration/app/lib/*_extensions.rb"].each do |dir|
         FileUtils.rm_rf dir
       end
+      system("rake db:drop")
+      system("rake db:create")
       # Revert environment lib requires
       FileUtils.cp "config/environment.rb.canonical", "config/environment.rb"
     end
