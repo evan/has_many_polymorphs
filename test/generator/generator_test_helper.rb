@@ -1,25 +1,27 @@
+
+require 'fileutils'
+
 require File.dirname(__FILE__) + '/../test_helper'
 
-require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
 require 'tasks/rails'
 
 class Test::Unit::TestCase  
   def setup_test_environment
-    chdir(RAILS_ROOT)
-    ENV['SCHEMA'] = RAILS_ROOT + "/db/schema.rb"
-    
-    Rake::Task["db:drop"].invoke
-    Rake::Task["db:create"].invoke
-    ["db/migrate", "app/models", "test/fixtures", "test/unit"].each do |dir|
-      command = "rm -rf #{RAILS_ROOT}/#{dir}/*"
-      system command
+    Dir.chdir RAILS_ROOT do
+      ENV['SCHEMA'] = RAILS_ROOT + "/db/schema.rb"
+      
+      system("rake db:drop")
+      system("rake db:create")
+      ["db/migrate", "app/models", "test/fixtures", "test/unit"].each do |dir|
+        FileUtils.rm_rf dir
+      end
+      # Revert environment lib requires
+      FileUtils.cp "config/environment.rb.canonical", "config/environment.rb"
     end
   end
   
   def migrate
-    Rake::Task["db:migrate"].invoke
+    system("rake db:migrate")
   end
   
   def generate_model(name)
@@ -42,7 +44,7 @@ class Test::Unit::TestCase
   end
   
   def run_unit_tests
-    Rake::Task["test:units"].invoke
+    system("rake test:units")
   end
   
 end
