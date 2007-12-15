@@ -8,9 +8,7 @@ require 'tasks/rails'
 class Test::Unit::TestCase  
 
   def in_rails
-    Dir.chdir RAILS_ROOT do
-      yield
-    end
+    Dir.chdir RAILS_ROOT { yield }
   end
 
   def setup_test_environment    
