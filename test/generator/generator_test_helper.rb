@@ -13,11 +13,11 @@ class Test::Unit::TestCase
       ["log", "generated_models", "db/schema.rb", "db/migrate", "app/models", "test/fixtures", "test/unit", "lib/*_extensions.rb"].each do |dir|
         FileUtils.rm_rf dir
       end
+      system("mkdir log; touch log/development.log")
       system("rake db:drop")
       system("rake db:create")
       # Revert environment lib requires
       FileUtils.cp "config/environment.rb.canonical", "config/environment.rb"
-      system("mkdir log; touch log/development.log")
     end
   end
   
