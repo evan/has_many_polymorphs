@@ -14,7 +14,7 @@ class Test::Unit::TestCase
     
     system("rake db:drop")
     system("rake db:create")
-    ["db/migrate", "app/models", "test/fixtures", "test/unit"].each do |dir|
+    ["db/migrate", "app/models", "test/fixtures", "test/unit", "integration/app/lib/*_extensions.rb"].each do |dir|
       FileUtils.rm_rf dir
     end
     # Revert environment lib requires
@@ -31,18 +31,7 @@ class Test::Unit::TestCase
     load "#{name.downcase}.rb"
     @generated_models << name
   end
-  
-  def generate_dummy_records
-    @generated_models.each do |name|
-      load "#{name.downcase}.rb"
-      2.times { name.constantize.create(:name => "foo#{rand(100)}") }
-    end
-  end
-  
-  def generate(*args)
-    Rails::Generator::Scripts::Generate.new.run(args)
-  end
-  
+    
   def run_unit_tests
     system("rake test:units")
   end
