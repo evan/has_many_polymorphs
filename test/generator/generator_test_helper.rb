@@ -7,17 +7,18 @@ require 'tasks/rails'
 
 class Test::Unit::TestCase  
   def setup_test_environment
-    Dir.chdir RAILS_ROOT do
-      ENV['SCHEMA'] = RAILS_ROOT + "/db/schema.rb"
-      
-      system("rake db:drop")
-      system("rake db:create")
-      ["db/migrate", "app/models", "test/fixtures", "test/unit"].each do |dir|
-        FileUtils.rm_rf dir
-      end
-      # Revert environment lib requires
-      FileUtils.cp "config/environment.rb.canonical", "config/environment.rb"
+    @dir = Dir.pwd
+    Dir.chdir RAILS_ROOT
+
+    ENV['SCHEMA'] = RAILS_ROOT + "/db/schema.rb"
+    
+    system("rake db:drop")
+    system("rake db:create")
+    ["db/migrate", "app/models", "test/fixtures", "test/unit"].each do |dir|
+      FileUtils.rm_rf dir
     end
+    # Revert environment lib requires
+    FileUtils.cp "config/environment.rb.canonical", "config/environment.rb"
   end
   
   def migrate
@@ -45,6 +46,10 @@ class Test::Unit::TestCase
   
   def run_unit_tests
     system("rake test:units")
+  end
+  
+  def teardown
+    Dir.chdir @dir
   end
   
 end
