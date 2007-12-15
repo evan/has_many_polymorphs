@@ -6,11 +6,11 @@ class TaggingGeneratorTest < Test::Unit::TestCase
     setup_test_environment
     
     # Generate two models for our tags
-    generate_model("Rock")
-    generate_model("Pop")
+    generate_model("Stick")
+    generate_model("Stone")
     
     # Run tagging generator
-    generate("tagging", "Rock", "Pop")
+    generate("tagging", "Stick", "Stone")
     
     # Delete existing migrations and migrate again
     migrate
