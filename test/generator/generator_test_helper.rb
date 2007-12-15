@@ -1,9 +1,6 @@
 
 require 'fileutils'
-
 require File.dirname(__FILE__) + '/../test_helper'
-
-require 'tasks/rails'
 
 class Test::Unit::TestCase  
 
