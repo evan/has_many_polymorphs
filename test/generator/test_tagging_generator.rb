@@ -1,6 +1,4 @@
 require File.dirname(__FILE__) + '/generator_test_helper'
-require 'rails_generator'
-require 'rails_generator/scripts/generate'
 
 class TaggingGeneratorTest < Test::Unit::TestCase
   

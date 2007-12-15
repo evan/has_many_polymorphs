@@ -5,7 +5,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 class Test::Unit::TestCase  
 
   def in_rails
-    Dir.chdir RAILS_ROOT { yield }
+    Dir.chdir(RAILS_ROOT) { yield }
   end
 
   def setup_test_environment    
