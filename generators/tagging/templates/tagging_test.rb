@@ -1,13 +1,21 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class TaggingTest < Test::Unit::TestCase
-  fixtures :taggings, :tags, <%= taggable_models[0..1].join(", ") -%>
+  fixtures :tags, :taggings, <%= taggable_models[0..1].join(", ") -%>
 
   def setup
-    @obj1 = <%= model_two %>.find(1)
-    @obj2 = <%= model_two %>.find(2)
+    @objs = <%= model_two %>.find(:all, :limit => 2)
+    
+    @obj1 = @objs[0]
+    @obj1.tag_with("delicious")
+    @obj1.reload
+    
+    @obj2 = @objs[1]
+    @obj2.tag_with("delicious sexy")
+    @obj2.reload
+    
 <% if taggable_models.size > 1 -%>
-    @obj3 = <%= model_one -%>.find(1)
+    @obj3 = <%= model_one -%>.find(:first)
 <% end -%>
     @tag1 = Tag.find(1)  
     @tag2 = Tag.find(2)  
