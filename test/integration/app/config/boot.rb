@@ -55,8 +55,10 @@ module Rails
 
     def load_rails_gem
       if version = self.class.gem_version
+        STDERR.puts "Boot.rb loading version #{version}"
         gem 'rails', version
       else
+        STDERR.puts "Boot.rb loading latest available version"
         gem 'rails'
       end
     rescue Gem::LoadError => load_error

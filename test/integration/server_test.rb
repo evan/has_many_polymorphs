@@ -13,7 +13,7 @@ class ServerTest < Test::Unit::TestCase
     @pid = Process.fork do
        Dir.chdir RAILS_ROOT do
          # print "S"
-         exec("script/server -p #{PORT} &> /dev/null")
+         exec("script/server -p #{PORT} > /dev/null")
        end
      end
      sleep(5)
