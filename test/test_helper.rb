@@ -6,10 +6,8 @@ require 'test/unit'
 require 'multi_rails_init'
 require 'ruby-debug'
 
-if defined? ENV['MULTIRAILS_GEM_VERSION']
-  ENV['RAILS_GEM_VERSION'] = ENV['MULTIRAILS_GEM_VERSION']
-else
-  STDERR.puts "No multirails version"
+if defined? ENV['MULTIRAILS_RAILS_VERSION']
+  ENV['RAILS_GEM_VERSION'] = ENV['MULTIRAILS_RAILS_VERSION']
 end
 
 HERE = File.expand_path(File.dirname(__FILE__))
