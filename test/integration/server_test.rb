@@ -13,7 +13,7 @@ class ServerTest < Test::Unit::TestCase
     @pid = Process.fork do
        Dir.chdir RAILS_ROOT do
          # print "S"
-         exec("script/server -p #{PORT} > /dev/null")
+         exec("RAILS_GEM_VERSION=#{ENV['RAILS_GEM_VERSION']} script/server -p #{PORT} &> #{LOG}")
        end
      end
      sleep(5)

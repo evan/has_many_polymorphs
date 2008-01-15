@@ -4,9 +4,12 @@ require 'rubygems'
 require 'echoe'
 require 'test/unit'
 require 'multi_rails_init'
+require 'ruby-debug'
 
-if defined? MULTIRAILS_GEM_VERSION
-  ENV['RAILS_GEM_VERSION'] = MULTIRAILS_GEM_VERSION
+if defined? ENV['MULTIRAILS_GEM_VERSION']
+  ENV['RAILS_GEM_VERSION'] = ENV['MULTIRAILS_GEM_VERSION']
+else
+  STDERR.puts "No multirails version"
 end
 
 HERE = File.expand_path(File.dirname(__FILE__))

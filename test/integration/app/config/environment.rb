@@ -1,6 +1,3 @@
-
-RAILS_GEM_VERSION = ENV['MULTIRAILS_RAILS_VERSION'] if ENV['MULTIRAILS_RAILS_VERSION']
-
 require File.join(File.dirname(__FILE__), 'boot')
 require 'action_controller'
 
