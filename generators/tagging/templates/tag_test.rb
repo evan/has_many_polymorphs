@@ -5,11 +5,11 @@ class TagTest < Test::Unit::TestCase
   
   def setup
     @obj = <%= model_two %>.find(:first)
-    @obj.tag_with "delicious sexy"
+    @obj.tag_with "pale imperial"
   end
 
   def test_to_s
-    assert_equal "delicious sexy", <%= model_two -%>.find(:first).tags.to_s
+    assert_equal "imperial pale", <%= model_two -%>.find(:first).tags.to_s
   end
   
 end
