@@ -9,8 +9,8 @@ class TaggingGeneratorTest < Test::Unit::TestCase
     generate_model("Stick")
     generate_model("Stone")
     
-    # Run tagging generator
-    generate("tagging", "Stick", "Stone")
+#     Run tagging generator
+#    generate("tagging", "Stick", "Stone")
     
     # Delete existing migrations and migrate again
     migrate
