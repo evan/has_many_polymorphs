@@ -1,8 +1,7 @@
 class CreateOrganicSubstances < ActiveRecord::Migration
   def self.up
     create_table :organic_substances do |t|
-      t.string "type"
-      t.timestamps
+      t.column :type, :string
     end
   end
 
