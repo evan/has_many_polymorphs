@@ -1,2 +1,2 @@
-class Bone < ActiveRecord::Base
+class Bone < OrganicSubstance
 end

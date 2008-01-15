@@ -1,7 +1,5 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  type: Bone
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+two:
+  type: Bone
