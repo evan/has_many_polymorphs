@@ -21,19 +21,9 @@ task "test_all" do
     system("rake test:multi_rails:all")
   
     # XXX Right now we don't test anything that depends on this, although we should
-    #
-    # ENV['PRODUCTION'] = '1'
-    # STDERR.puts "#{'='*80}\nProduction mode for #{adapter}\n#{'='*80}"
-    # system("rake test:multi_rails:all")
-    
+  
+    ENV['PRODUCTION'] = '1'
+    STDERR.puts "#{'='*80}\nProduction mode for #{adapter}\n#{'='*80}"
+    system("rake test:multi_rails:all")    
   end
-end
-
-namespace :test do
-  Rake::TestTask.new(:generator) do |t|
-    t.libs << "test"
-    t.pattern = 'test/generator/*_test.rb'
-    t.verbose = true
-  end
-  Rake::Task['test:generator'].comment = "Run generator tests in real application"
 end
