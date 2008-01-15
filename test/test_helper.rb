@@ -10,8 +10,10 @@ if defined? ENV['MULTIRAILS_RAILS_VERSION']
   ENV['RAILS_GEM_VERSION'] = ENV['MULTIRAILS_RAILS_VERSION']
 end
 
-HERE = File.expand_path(File.dirname(__FILE__))
-$LOAD_PATH << HERE
+Echoe.silence do
+  HERE = File.expand_path(File.dirname(__FILE__))
+  $LOAD_PATH << HERE
+end
 
 LOG = "#{HERE}/integration/app/log/development.log"     
 

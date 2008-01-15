@@ -30,9 +30,10 @@ class ServerTest < Test::Unit::TestCase
   end
   
   def test_association_reloading
-    4.times do
-      assert_match(/Bones: index/, open(URL + 'bones').read)
-    end
+    assert_match(/Bones: index/, open(URL + 'bones').read)
+    assert_match(/Bones: index/, open(URL + 'bones').read)
+    assert_match(/Bones: index/, open(URL + 'bones').read)
+    assert_match(/Bones: index/, open(URL + 'bones').read)
   end
   
 end

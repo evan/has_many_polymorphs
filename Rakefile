@@ -20,8 +20,6 @@ task "test_all" do
     STDERR.puts "#{'='*80}\nDevelopment mode for #{adapter}\n#{'='*80}"
     system("rake test:multi_rails:all")
   
-    # XXX Right now we don't test anything that depends on this, although we should
-  
     ENV['PRODUCTION'] = '1'
     STDERR.puts "#{'='*80}\nProduction mode for #{adapter}\n#{'='*80}"
     system("rake test:multi_rails:all")    
