@@ -1,9 +1,7 @@
 class CreateSticks < ActiveRecord::Migration
   def self.up
     create_table :sticks do |t|
-      t.string :name
-
-      t.timestamps
+      t.column :name, :string
     end
   end
 
