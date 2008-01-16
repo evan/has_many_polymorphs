@@ -28,7 +28,7 @@ Note that you can override DEFAULT_OPTIONS via Rails::Configuration#has_many_pol
     mattr_accessor :options
     @@options = HashWithIndifferentAccess.new(DEFAULT_OPTIONS)      
 
-    # Override for Rails::Initializer#after_initialize.
+    # Dispatcher callback to load polymorphic relationships from the top down.
     def self.autoload
 
       _logger_debug "autoload hook invoked"
