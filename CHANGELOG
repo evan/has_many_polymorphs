@@ -1,5 +1,5 @@
 
-v2.12. Improvements to the test suite; bugfixes for STI children (rsl).
+v2.12. Improvements to the test suite; bugfixes for STI children (rsl). Remove fancy dependency system in favor of using Dispatcher::to_prepare every time.
 
 v2.11. Rails 1.2.6 tagging generator compatibility; change test suite to use included integration app.
 

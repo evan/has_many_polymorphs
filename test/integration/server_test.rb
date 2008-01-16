@@ -36,4 +36,8 @@ class ServerTest < Test::Unit::TestCase
     assert_match(/Bones: index/, open(URL + 'bones').read)
   end
   
+  def test_verify_autoload_gets_invoked_in_console
+    # XXX Probably can use script/runner to test this
+  end
+  
 end
