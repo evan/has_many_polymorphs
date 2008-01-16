@@ -63,6 +63,21 @@ One of the child models:
     # nothing
   end
 
+For your parent and child models, you don't need any special fields in your migration. For the join model (GuestsKennel), use a migration like so:
+
+  class CreateGuestsKennels < ActiveRecord::Migration
+    def self.up
+      create_table :guests_kennels do |t|
+        t.references :guest, :polymorphic => true
+        t.references :kennel
+      end
+    end
+  
+    def self.down
+      drop_table :guests_kennels
+    end
+  end
+
 See ActiveRecord::Associations::PolymorphicClassMethods for more configuration options.
 
 == Helper methods example
@@ -112,6 +127,21 @@ Double-sided relationships are defined on the join model:
 Now, dogs and cats can eat birds and cats. Birds can't eat anything (they aren't <tt>guests</tt>) and dogs can't be eaten by anything (since they aren't <tt>eatens</tt>). The keys stand for what the models are, not what they do. 
 
 In this case, each guest/eaten relationship is called a Devouring.
+
+In your migration, you need to declare both sides as polymorphic:
+
+  class CreateDevourings < ActiveRecord::Migration
+    def self.up
+      create_table :devourings do |t|
+        t.references :guest, :polymorphic => true
+        t.references :eaten, :polymorphic => true
+      end
+    end
+  
+    def self.down
+      drop_table :devourings
+    end
+  end
 
 See ActiveRecord::Associations::PolymorphicClassMethods for more.
 
