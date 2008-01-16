@@ -341,9 +341,9 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
         
         # create the reflection object      
         returning(create_reflection(:has_many_polymorphs, association_id, options, self)) do |reflection|
-          if defined? Dependencies and defined? RAILS_ENV and RAILS_ENV == "development"                    
-            inject_dependencies(association_id, reflection) if Dependencies.mechanism == :load
-          end
+#          if defined? Dependencies and defined? RAILS_ENV and RAILS_ENV == "development"                    
+#            inject_dependencies(association_id, reflection) if Dependencies.mechanism == :load
+#          end
           
           # set up the other related associations      
           create_join_association(association_id, reflection)

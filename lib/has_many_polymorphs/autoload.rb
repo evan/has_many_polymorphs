@@ -31,13 +31,13 @@ Note that you can override DEFAULT_OPTIONS via Rails::Configuration#has_many_pol
   def self.autoload
 
     _logger_debug "autoload hook invoked"
-    
-    options[:requirements].each do |requirement|
-      _logger_warn "forcing requirement load of #{requirement}.rb"
-      require requirement
+      
+    files = Dir[options[:file_pattern]]
+    files += options[:requirements].map do |filename|
+      filename + ".rb"
     end
-  
-    Dir[options[:file_pattern]].each do |filename|
+    
+    files.each do |filename|
       next if filename =~ /#{options[:file_exclusions].join("|")}/
       open filename do |file|
         if file.grep(/#{options[:methods].join("|")}/).any?
