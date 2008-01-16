@@ -33,6 +33,7 @@ class TaggingGeneratorTest < Test::Unit::TestCase
       Echoe.silence do
         assert system("script/generate tagging Stick Stone -q -f")
         assert system("rake db:migrate")
+        assert system("rake db:fixtures:load")
         assert system("rake test:units")      
       end
     end
