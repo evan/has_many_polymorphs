@@ -1,7 +1,7 @@
 
-require 'initializer' unless defined? Rails::Initializer
+require 'dispatcher'
 
-class Rails::Initializer #:nodoc:
+module HasManyPolymorphs
 
 =begin rdoc    
 Searches for models that use <tt>has_many_polymorphs</tt> or <tt>acts_as_double_polymorphic_join</tt> and makes sure that they get loaded during app initialization. This ensures that helper methods are injected into the target classes. 
@@ -17,7 +17,7 @@ Note that you can override DEFAULT_OPTIONS via Rails::Configuration#has_many_pol
   
 =end
 
-  module HasManyPolymorphsAutoload
+  module Autoload
         
     DEFAULT_OPTIONS = {
       :file_pattern => "#{RAILS_ROOT}/app/models/**/*.rb",
@@ -29,19 +29,18 @@ Note that you can override DEFAULT_OPTIONS via Rails::Configuration#has_many_pol
     @@options = HashWithIndifferentAccess.new(DEFAULT_OPTIONS)      
 
     # Override for Rails::Initializer#after_initialize.
-    def after_initialize_with_autoload
-      after_initialize_without_autoload
+    def self.autoload
 
       _logger_debug "autoload hook invoked"
       
-      HasManyPolymorphsAutoload.options[:requirements].each do |requirement|
+      options[:requirements].each do |requirement|
         require requirement
       end
     
-      Dir[HasManyPolymorphsAutoload.options[:file_pattern]].each do |filename|
-        next if filename =~ /#{HasManyPolymorphsAutoload.options[:file_exclusions].join("|")}/
+      Dir[options[:file_pattern]].each do |filename|
+        next if filename =~ /#{options[:file_exclusions].join("|")}/
         open filename do |file|
-          if file.grep(/#{HasManyPolymorphsAutoload.options[:methods].join("|")}/).any?
+          if file.grep(/#{options[:methods].join("|")}/).any?
             begin
               model = File.basename(filename)[0..-4].camelize
               _logger_warn "preloading parent model #{model}"
@@ -55,8 +54,9 @@ Note that you can override DEFAULT_OPTIONS via Rails::Configuration#has_many_pol
     end  
     
   end
-  
-  include HasManyPolymorphsAutoload
     
-  alias_method_chain :after_initialize, :autoload
+end
+
+Dispatcher.to_prepare do
+  HasManyPolymorphs::Autoload.autoload
 end
