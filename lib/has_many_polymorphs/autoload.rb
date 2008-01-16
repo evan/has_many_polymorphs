@@ -40,7 +40,7 @@ Note that you can override DEFAULT_OPTIONS via Rails::Configuration#has_many_pol
     files.each do |filename|
       next if filename =~ /#{options[:file_exclusions].join("|")}/
       open filename do |file|
-        if file.grep(/#{options[:methods].join("|")}/).any?
+        if File.exist? file and file.grep(/#{options[:methods].join("|")}/).any?
           begin
             model = File.basename(filename)[0..-4].camelize
             _logger_warn "preloading parent model #{model}"
