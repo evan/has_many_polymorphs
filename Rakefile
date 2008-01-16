@@ -9,7 +9,7 @@ Echoe.new("has_many_polymorphs") do |p|
   p.dependencies = ["activerecord"]
   p.rdoc_pattern = /polymorphs\/association|polymorphs\/class_methods|polymorphs\/reflection|polymorphs\/autoload|polymorphs\/configuration|README|CHANGELOG|TODO|LICENSE|templates\/migration\.rb|templates\/tag\.rb|templates\/tagging\.rb|templates\/tagging_extensions\.rb/    
   p.require_signed = true
-  p.clean_pattern << "**/ruby_sess*"
+  p.clean_pattern += ["**/ruby_sess*", "**/generated_models/**"]
   p.test_pattern = ["test/unit/*_test.rb", "test/integration/*_test.rb", "test/generator/*_test.rb"]
 end
 

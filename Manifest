@@ -94,11 +94,8 @@ test/integration/app/db/migrate/007_create_single_sti_parent_relationships.rb
 test/integration/app/db/migrate/008_create_double_sti_parent_relationships.rb
 test/integration/app/db/schema.rb
 test/integration/app/doc/README_FOR_APP
-test/integration/app/generated_models/stick.rb
-test/integration/app/generated_models/stone.rb
-test/integration/app/generated_models/tag.rb
-test/integration/app/generated_models/tagging.rb
 test/integration/app/generators/commenting_generator_test.rb
+test/integration/app/hmp_development
 test/integration/app/public/404.html
 test/integration/app/public/500.html
 test/integration/app/public/dispatch.cgi
