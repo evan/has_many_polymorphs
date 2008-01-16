@@ -16,7 +16,6 @@ lib/has_many_polymorphs/base.rb
 lib/has_many_polymorphs/class_methods.rb
 lib/has_many_polymorphs/configuration.rb
 lib/has_many_polymorphs/debugging_tools.rb
-lib/has_many_polymorphs/dependencies.rb
 lib/has_many_polymorphs/rake_task_redefine_task.rb
 lib/has_many_polymorphs/reflection.rb
 lib/has_many_polymorphs/support_methods.rb
@@ -92,10 +91,12 @@ test/integration/app/db/migrate/005_create_single_sti_parents.rb
 test/integration/app/db/migrate/006_create_double_sti_parents.rb
 test/integration/app/db/migrate/007_create_single_sti_parent_relationships.rb
 test/integration/app/db/migrate/008_create_double_sti_parent_relationships.rb
+test/integration/app/db/migrate/009_create_library_model.rb
 test/integration/app/db/schema.rb
 test/integration/app/doc/README_FOR_APP
 test/integration/app/generators/commenting_generator_test.rb
 test/integration/app/hmp_development
+test/integration/app/lib/library_model.rb
 test/integration/app/public/404.html
 test/integration/app/public/500.html
 test/integration/app/public/dispatch.cgi
