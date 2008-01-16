@@ -1,5 +1,6 @@
 
-require 'dispatcher'
+require 'initializer' unless defined? ::Rails::Initializer 
+require 'dispatcher' unless defined? ::ActionController::Dispatcher
 
 module HasManyPolymorphs
 
@@ -54,6 +55,16 @@ Note that you can override DEFAULT_OPTIONS via Rails::Configuration#has_many_pol
     
 end
 
+class Rails::Initializer #:nodoc:
+  # Make sure it gets loaded in the console, tests, and migrations
+  def after_initialize_with_autoload 
+    after_initialize_without_autoload
+    HasManyPolymorphs.autoload
+  end
+  alias_method_chain :after_initialize, :autoload 
+end
+
 Dispatcher.to_prepare(:has_many_polymorphs_autoload) do
+  # Make sure it gets loaded in the app
   HasManyPolymorphs.autoload
 end
