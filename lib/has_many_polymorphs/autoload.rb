@@ -12,7 +12,7 @@ Note that you can override DEFAULT_OPTIONS via Rails::Configuration#has_many_pol
     # your other configuration here
     
     config.after_initialize do
-      config.has_many_polymorphs_options['requirements'] << 'lib/my_extension_model'
+      config.has_many_polymorphs_options['requirements'] << 'lib/my_extension'
     end    
   end
   
@@ -31,16 +31,16 @@ Note that you can override DEFAULT_OPTIONS via Rails::Configuration#has_many_pol
   def self.autoload
 
     _logger_debug "autoload hook invoked"
-      
-    files = Dir[options[:file_pattern]]
-    files += options[:requirements].map do |filename|
-      filename + ".rb"
-    end
     
-    files.each do |filename|
+    options[:requirements].each do |requirement|
+      _logger_warn "forcing requirement load of #{requirement}"
+      require requirement
+    end
+  
+    Dir[options[:file_pattern]].each do |filename|
       next if filename =~ /#{options[:file_exclusions].join("|")}/
       open filename do |file|
-        if File.exist? file and file.grep(/#{options[:methods].join("|")}/).any?
+        if file.grep(/#{options[:methods].join("|")}/).any?
           begin
             model = File.basename(filename)[0..-4].camelize
             _logger_warn "preloading parent model #{model}"

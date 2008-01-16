@@ -10,7 +10,7 @@ Rails::Initializer.run do |config|
   config.load_paths << "#{RAILS_ROOT}/app/models/person" # moduleless model path
   
   config.after_initialize do
-    config.has_many_polymorphs_options['requirements'] << 'lib/library_model'
+    config.has_many_polymorphs_options['requirements'] << "#{RAILS_ROOT}/lib/library_model"
   end      
 end
 

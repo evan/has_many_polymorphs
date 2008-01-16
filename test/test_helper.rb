@@ -13,6 +13,7 @@ end
 Echoe.silence do
   HERE = File.expand_path(File.dirname(__FILE__))
   $LOAD_PATH << HERE
+  # $LOAD_PATH << "#{HERE}/integration/app"
 end
 
 LOG = "#{HERE}/integration/app/log/development.log"     
