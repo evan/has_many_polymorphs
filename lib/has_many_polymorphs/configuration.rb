@@ -6,11 +6,11 @@ Access the <tt>has_many_polymorphs_options</tt> hash in your Rails::Initializer.
 class Rails::Configuration
 
   def has_many_polymorphs_options
-    Rails::Initializer::HasManyPolymorphsAutoload.options
+    ::HasManyPolymorphs.options
   end
   
   def has_many_polymorphs_options=(hash)
-    Rails::Initializer::HasManyPolymorphsAutoload.options = hash
+    ::HasManyPolymorphs.options = HashWithIndifferentAccess.new(hash)
   end
   
 end

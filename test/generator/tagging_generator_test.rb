@@ -15,7 +15,7 @@ class TaggingGeneratorTest < Test::Unit::TestCase
         "test/unit/tag_test.rb", "test/unit/tagging_test.rb", 
         "test/fixtures/tags.yml", "test/fixtures/taggings.yml",
         "lib/tagging_extensions.rb",
-        "db/migrate/009_create_tags_and_taggings.rb"].each do |file|
+        "db/migrate/010_create_tags_and_taggings.rb"].each do |file|
           File.delete file if File.exist? file
       end
       

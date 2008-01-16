@@ -8,6 +8,10 @@ Rails::Initializer.run do |config|
   end
   
   config.load_paths << "#{RAILS_ROOT}/app/models/person" # moduleless model path
+  
+  config.after_initialize do
+    config.has_many_polymorphs_options['requirements'] << 'lib/library_model'
+  end      
 end
 
 # Dependencies.log_activity = true
