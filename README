@@ -7,9 +7,9 @@ An ActiveRecord plugin for self-referential and double-sided polymorphic associa
 
 Copyright 2007, 2008 Cloudburst, LLC. Licensed under the AFL 3. See the included LICENSE file. 
 
-The public certificate for the gem is here[link:http://rubyforge.org/frs/download.php/25331/evan_weaver-original-public_cert.pem]. 
+The public certificate for the gem is here[http://rubyforge.org/frs/download.php/25331/evan_weaver-original-public_cert.pem]. 
 
-If you like this software, please {make a donation to charity}[link:http://blog.evanweaver.com/donate/] or {recommend Evan}[link:http://www.workingwithrails.com/person/7739-evan-weaver] at Working with Rails.
+If you like this software, please {make a donation to charity}[http://blog.evanweaver.com/donate/] or {recommend Evan}[http://www.workingwithrails.com/person/7739-evan-weaver] at Working with Rails.
 
 == Description
 
