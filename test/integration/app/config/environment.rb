@@ -17,5 +17,3 @@ end
 # Dependencies.log_activity = true
 
 ENV['RAILS_ASSET_ID'] = Time.now.to_i.to_s
-
-require 'tagging_extensions'
