@@ -101,13 +101,14 @@ class ActiveRecord::Base #:nodoc:
   end
   
   module TaggingFinders
-    # 
     # Find all the objects tagged with the supplied list of tags
     # 
     # Usage : Model.tagged_with("ruby")
     #         Model.tagged_with("hello", "world")
     #         Model.tagged_with("hello", "world", :limit => 10)
     #
+    # XXX This query strategy is not performant, and needs to be rewritten as an inverted join or a series of unions
+    # 
     def tagged_with(*tag_list)
       options = tag_list.last.is_a?(Hash) ? tag_list.pop : {}
       tag_list = parse_tags(tag_list)
