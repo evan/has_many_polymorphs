@@ -1,4 +1,3 @@
-
 Has_many_polymorphs
 
 An ActiveRecord plugin for self-referential and double-sided polymorphic associations.
@@ -37,7 +36,7 @@ The plugin also includes a generator for a tagging system, a common use case (se
 == Installation
 
 To install the Rails plugin, run:
-  script/plugin install svn://rubyforge.org/var/svn/fauna/has_many_polymorphs/trunk
+  script/plugin install git://github.com/fauna/has_many_polymorphs.git
 
 There's also a gem version. To install it instead, run: 
   sudo gem install has_many_polymorphs
