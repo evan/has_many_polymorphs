@@ -36,7 +36,7 @@ Note that you can override DEFAULT_OPTIONS via Rails::Configuration#has_many_pol
       require requirement
     end
   
-    Dir[options[:file_pattern]].each do |filename|
+    Dir.glob(options[:file_pattern]).each do |filename|
       next if filename =~ /#{options[:file_exclusions].join("|")}/
       open filename do |file|
         if file.grep(/#{options[:methods].join("|")}/).any?
