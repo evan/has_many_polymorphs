@@ -3,6 +3,8 @@ module ActiveRecord #:nodoc:
     
     module ClassMethods #:nodoc:
       
+      # Update the default reflection switch so that <tt>:has_many_polymorphs</tt> types get instantiated. 
+      # It's not a composed method so we have to override the whole thing.
       def create_reflection(macro, name, options, active_record)
         case macro
           when :has_many, :belongs_to, :has_one, :has_and_belongs_to_many
