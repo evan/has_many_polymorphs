@@ -23,7 +23,7 @@ LOG = "#{HERE}/integration/app/log/development.log"
 require 'integration/app/config/environment'
 require 'test_help'
 
-Inflector.inflections {|i| i.irregular 'fish', 'fish' }
+ActiveSupport::Inflector.inflections {|i| i.irregular 'fish', 'fish' }
 
 $LOAD_PATH.unshift(Test::Unit::TestCase.fixture_path = HERE + "/fixtures")
 $LOAD_PATH.unshift(HERE + "/models")
