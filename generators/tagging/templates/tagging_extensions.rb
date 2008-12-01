@@ -139,8 +139,8 @@ class ActiveRecord::Base #:nodoc:
       sql << "HAVING COUNT(taggings.tag_id) = #{tag_list.size}"
       
       add_order!(sql, options[:order], scope)
-      add_limit!(sql, options, scope)
-      add_lock!(sql, options, scope)
+      add_limit!(sql, options[:limit], scope)
+      add_lock!(sql, options[:lock], scope)
       
       find_by_sql(sql)
     end
