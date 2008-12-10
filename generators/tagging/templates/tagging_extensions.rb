@@ -120,7 +120,7 @@ class ActiveRecord::Base #:nodoc:
       sql  = "SELECT #{(scope && scope[:select]) || options[:select]} "
       sql << "FROM #{(scope && scope[:from]) || options[:from]} "
 
-      add_joins!(sql, options, scope)
+      add_joins!(sql, options[:joins], scope)
       
       sql << "WHERE #{table_name}.#{primary_key} = taggings.taggable_id "
       sql << "AND taggings.taggable_type = '#{ActiveRecord::Base.send(:class_name_of_active_record_descendant, self).to_s}' "
