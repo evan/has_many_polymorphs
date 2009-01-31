@@ -1,6 +1,5 @@
-
 require 'initializer' unless defined? ::Rails::Initializer 
-require 'dispatcher' unless defined? ::ActionController::Dispatcher
+require 'action_controller/dispatcher' unless defined? ::ActionController::Dispatcher
 
 module HasManyPolymorphs
 
@@ -64,7 +63,7 @@ class Rails::Initializer #:nodoc:
   alias_method_chain :after_initialize, :autoload 
 end
 
-Dispatcher.to_prepare(:has_many_polymorphs_autoload) do
+ActionController::Dispatcher.to_prepare(:has_many_polymorphs_autoload) do
   # Make sure it gets loaded in the app
   HasManyPolymorphs.autoload
 end
