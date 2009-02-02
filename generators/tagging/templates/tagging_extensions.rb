@@ -154,7 +154,7 @@ class ActiveRecord::Base #:nodoc:
    
      scope = scope(:find)
      options[:select] ||= "#{table_name}.*"
-     options[:from] ||= "#{table_name}, meta_tags, taggings"
+     options[:from] ||= "#{table_name}, tags, taggings"
    
      sql  = "SELECT #{(scope && scope[:select]) || options[:select]} "
      sql << "FROM #{(scope && scope[:from]) || options[:from]} "
@@ -163,12 +163,12 @@ class ActiveRecord::Base #:nodoc:
    
      sql << "WHERE #{table_name}.#{primary_key} = taggings.taggable_id "
      sql << "AND taggings.taggable_type = '#{ActiveRecord::Base.send(:class_name_of_active_record_descendant, self).to_s}' "
-     sql << "AND taggings.meta_tag_id = meta_tags.id "
+     sql << "AND taggings.tag_id = tags.id "
      
      sql << "AND ("
      or_options = []
      tag_list.each do |name|
-       or_options << "meta_tags.name = '#{name}'"
+       or_options << "tags.name = '#{name}'"
      end
      or_options_joined = or_options.join(" OR ")
      sql << "#{or_options_joined}) "
