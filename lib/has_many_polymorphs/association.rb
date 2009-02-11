@@ -88,8 +88,9 @@ module ActiveRecord #:nodoc:
       def construct_quoted_owner_attributes(*args) #:nodoc:
         # no access to returning() here? why not?
         type_key = @reflection.options[:foreign_type_key]
-        {@reflection.primary_key_name => @owner.id,
-          type_key=> (@owner.class.base_class.name if type_key)}
+        h = {@reflection.primary_key_name => @owner.id}
+        h[type_key] = @owner.class.base_class.name if type_key
+        h
       end
 
       def construct_from #:nodoc:
