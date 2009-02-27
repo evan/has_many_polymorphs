@@ -435,10 +435,9 @@ class PolymorphTest < Test::Unit::TestCase
   def test_individual_collections_created_for_double_relationship_from_opposite_side
     assert @alice.wild_boars.empty?
     @alice.protectors << @puma
+    @alice.reload
 
     assert @alice.protectors.any? {|obj| obj == @puma}
-    assert !@alice.wild_boars.any? {|obj| obj == @puma}    
-    @alice.reload
     assert @alice.wild_boars.any? {|obj| obj == @puma}    
     
     assert !Dog.find(@alice.id).wild_boars.any? {|obj| obj == @puma} # make sure the parent type is checked
