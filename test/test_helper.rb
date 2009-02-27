@@ -25,11 +25,11 @@ require 'test_help'
 
 ActiveSupport::Inflector.inflections {|i| i.irregular 'fish', 'fish' }
 
-$LOAD_PATH.unshift(Test::Unit::TestCase.fixture_path = HERE + "/fixtures")
+$LOAD_PATH.unshift(ActiveSupport::TestCase.fixture_path = HERE + "/fixtures")
 $LOAD_PATH.unshift(HERE + "/models")
 $LOAD_PATH.unshift(HERE + "/modules")
 
-class Test::Unit::TestCase
+class ActiveSupport::TestCase
   self.use_transactional_fixtures = !(ActiveRecord::Base.connection.is_a? ActiveRecord::ConnectionAdapters::MysqlAdapter rescue false)
   self.use_instantiated_fixtures  = false
 end

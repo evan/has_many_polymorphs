@@ -10,7 +10,7 @@ require 'aquatic/fish'
 require 'aquatic/pupils_whale'
 require 'beautiful_fight_relationship' 
 
-class PolymorphTest < Test::Unit::TestCase
+class PolymorphTest < ActiveSupport::TestCase
   
   set_fixture_class :bow_wows => Dog
   set_fixture_class :keep_your_enemies_close => BeautifulFightRelationship
