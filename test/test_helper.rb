@@ -1,10 +1,11 @@
 
 $VERBOSE = nil
 require 'rubygems'
+require 'rake' # echoe relies on Rake being present but doesn't require it itself
 require 'echoe'
 require 'test/unit'
 require 'multi_rails_init'
-require 'ruby-debug'
+#require 'ruby-debug' # uncomment if needed (for Ruby >= 1.9 use require 'debug' where needed)
 
 if defined? ENV['MULTIRAILS_RAILS_VERSION']
   ENV['RAILS_GEM_VERSION'] = ENV['MULTIRAILS_RAILS_VERSION']
