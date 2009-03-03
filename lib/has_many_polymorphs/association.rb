@@ -115,7 +115,7 @@ module ActiveRecord #:nodoc:
 
       def construct_joins(custom_joins = nil) #:nodoc:
         # build the string of default joins
-        "JOIN #{construct_owner} polymorphic_parent ON #{construct_from}.#{@reflection.options[:foreign_key]} = polymorphic_parent.#{construct_owner_key} " + 
+        "JOIN #{construct_owner} AS polymorphic_parent ON #{construct_from}.#{@reflection.options[:foreign_key]} = polymorphic_parent.#{construct_owner_key} " + 
         @reflection.options[:from].map do |plural|
           klass = plural._as_class
           "LEFT JOIN #{klass.quoted_table_name} ON #{construct_from}.#{@reflection.options[:polymorphic_key]} = #{klass.quoted_table_name}.#{klass.primary_key} AND #{construct_from}.#{@reflection.options[:polymorphic_type_key]} = #{@reflection.klass.quote_value(klass.base_class.name)}"
