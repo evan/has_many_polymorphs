@@ -15,7 +15,7 @@ module ActiveRecord
           record = Hash[*table_aliases.keys.map {|key| [key, record[table_aliases[key]]] }.flatten]          
           
           # find the real child class
-          klass = record["#{self.quoted_table_name}.#{reflection.options[:polymorphic_type_key]}"].constantize
+          klass = record["#{self.table_name}.#{reflection.options[:polymorphic_type_key]}"].constantize
           if sti_klass = record["#{klass.quoted_table_name}.#{klass.inheritance_column}"]
             klass = klass.class_eval do compute_type(sti_klass) end # in case of namespaced STI models
           end
