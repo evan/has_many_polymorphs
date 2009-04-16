@@ -23,15 +23,17 @@ class ActiveRecord::Base #:nodoc:
     def _remove_tags outgoing
       taggable?(true)
       outgoing = tag_cast_to_string(outgoing)
+      return [] if outgoing.empty?
   <% if options[:self_referential] %>  
       # because of http://dev.rubyonrails.org/ticket/6466
       taggings.destroy(*(taggings.find(:all, :include => :<%= parent_association_name -%>).select do |tagging| 
         outgoing.include? tagging.<%= parent_association_name -%>.name
       end))
-  <% else -%>   
-      <%= parent_association_name -%>s.delete(*(<%= parent_association_name -%>s.select do |tag|
-        outgoing.include? tag.name    
-      end))
+  <% else -%>
+      outgoing_tags = <%= parent_association_name -%>s.find_all_by_name(outgoing)
+      outgoing_taggings = taggings.find_all_by_<%= parent_association_name -%>_id(outgoing_tags.map(&:id))
+
+      taggings.destroy(*outgoing_taggings)
   <% end -%>
     end
 
