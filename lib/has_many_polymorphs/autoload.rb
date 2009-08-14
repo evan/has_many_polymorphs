@@ -38,7 +38,7 @@ Note that you can override DEFAULT_OPTIONS via Rails::Configuration#has_many_pol
   
     Dir.glob(options[:file_pattern]).each do |filename|
       next if filename =~ /#{options[:file_exclusions].join("|")}/
-      open(filename, :encoding=>"utf-8") do |file|
+      open(filename) do |file|
         if file.grep(/#{options[:methods].join("|")}/).any?
           begin
             model = File.basename(filename)[0..-4].camelize
