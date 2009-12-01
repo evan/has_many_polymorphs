@@ -120,20 +120,20 @@ class ActiveRecord::Base #:nodoc:
       
       scope = scope(:find)
       options[:select] ||= "#{table_name}.*"
-      options[:from] ||= "#{table_name}, tags, taggings"
+      options[:from] ||= "#{table_name}, #{Tag.table_name}, #{Tagging.table_name}"
       
       sql  = "SELECT #{(scope && scope[:select]) || options[:select]} "
       sql << "FROM #{(scope && scope[:from]) || options[:from]} "
 
       add_joins!(sql, options[:joins], scope)
       
-      sql << "WHERE #{table_name}.#{primary_key} = taggings.taggable_id "
-      sql << "AND taggings.taggable_type = '#{ActiveRecord::Base.send(:class_name_of_active_record_descendant, self).to_s}' "
-      sql << "AND taggings.tag_id = tags.id "
+      sql << "WHERE #{table_name}.#{primary_key} = #{Tagging.table_name}.taggable_id "
+      sql << "AND #{Tagging.table_name}.taggable_type = '#{ActiveRecord::Base.send(:class_name_of_active_record_descendant, self).to_s}' "
+      sql << "AND #{Tagging.table_name}.tag_id = #{Tag.table_name}.id "
       
       tag_list_condition = tag_list.map {|name| "'#{name}'"}.join(", ")
       
-      sql << "AND (tags.name IN (#{sanitize_sql(tag_list_condition)})) "
+      sql << "AND (#{Tag.table_name}.name IN (#{sanitize_sql(tag_list_condition)})) "
       sql << "AND #{sanitize_sql(options[:conditions])} " if options[:conditions]
       
       columns = column_names.map do |column| 
@@ -141,7 +141,7 @@ class ActiveRecord::Base #:nodoc:
       end.join(", ")
       
       sql << "GROUP BY #{columns} "
-      sql << "HAVING COUNT(taggings.tag_id) = #{tag_list.size}"
+      sql << "HAVING COUNT(#{Tagging.table_name}.tag_id) = #{tag_list.size}"
       
       add_order!(sql, options[:order], scope)
       add_limit!(sql, options, scope)
@@ -156,21 +156,21 @@ class ActiveRecord::Base #:nodoc:
    
      scope = scope(:find)
      options[:select] ||= "#{table_name}.*"
-     options[:from] ||= "#{table_name}, tags, taggings"
+     options[:from] ||= "#{table_name}, #{Tag.table_name}, #{Tagging.table_name}"
    
      sql  = "SELECT #{(scope && scope[:select]) || options[:select]} "
      sql << "FROM #{(scope && scope[:from]) || options[:from]} "
 
      add_joins!(sql, options, scope)
    
-     sql << "WHERE #{table_name}.#{primary_key} = taggings.taggable_id "
-     sql << "AND taggings.taggable_type = '#{ActiveRecord::Base.send(:class_name_of_active_record_descendant, self).to_s}' "
-     sql << "AND taggings.tag_id = tags.id "
+     sql << "WHERE #{table_name}.#{primary_key} = #{Tagging.table_name}.taggable_id "
+     sql << "AND #{Tagging.table_name}.taggable_type = '#{ActiveRecord::Base.send(:class_name_of_active_record_descendant, self).to_s}' "
+     sql << "AND #{Tagging.table_name}.tag_id = #{Tag.table_name}.id "
      
      sql << "AND ("
      or_options = []
      tag_list.each do |name|
-       or_options << "tags.name = '#{name}'"
+       or_options << "#{Tag.table_name}.name = '#{name}'"
      end
      or_options_joined = or_options.join(" OR ")
      sql << "#{or_options_joined}) "
