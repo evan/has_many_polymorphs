@@ -2,11 +2,15 @@ Has_many_polymorphs
 
 An ActiveRecord plugin for self-referential and double-sided polymorphic associations.
 
+== DEPRECATED
+
+No replacement.
+
 == License
 
-Copyright 2006-2008 Cloudburst, LLC. Licensed under the AFL 3. See the included LICENSE file. 
+Copyright 2006-2008 Cloudburst, LLC. Licensed under the AFL 3. See the included LICENSE file.
 
-The public certificate for the gem is here[http://blog.evanweaver.com/files/evan_weaver-original-public_cert.pem]. 
+The public certificate for the gem is here[http://blog.evanweaver.com/files/evan_weaver-original-public_cert.pem].
 
 If you use this software, please {make a donation}[http://blog.evanweaver.com/donate/], or {recommend Evan}[http://www.workingwithrails.com/person/7739-evan-weaver] at Working with Rails.
 
@@ -38,9 +42,9 @@ The plugin also includes a generator for a tagging system, a common use case (se
 To install the Rails plugin, run:
   script/plugin install git://github.com/fauna/has_many_polymorphs.git
 
-There's also a gem version. To install it instead, run: 
+There's also a gem version. To install it instead, run:
   sudo gem install has_many_polymorphs
-  
+
 If you are using the gem, make sure to add <tt>require 'has_many_polymorphs'</tt> to <tt>environment.rb</tt>, before Rails::Initializer block.
 
 == Configuration
@@ -73,7 +77,7 @@ For your parent and child models, you don't need any special fields in your migr
         t.references :kennel
       end
     end
-  
+
     def self.down
       drop_table :guests_kennels
     end
@@ -85,9 +89,9 @@ See ActiveRecord::Associations::PolymorphicClassMethods for more configuration o
 
   >> k = Kennel.find(1)
   #<Kennel id: 1, name: "Happy Paws">
-  >> k.guests.map(&:class) 
+  >> k.guests.map(&:class)
   [Dog, Cat, Cat, Bird]
-  
+
   >> k.guests.push(Cat.create); k.cats.size
   3
   >> k.guests << Cat.create; k.cats.size
@@ -97,14 +101,14 @@ See ActiveRecord::Associations::PolymorphicClassMethods for more configuration o
 
   >> d = k.dogs.first
   #<Dog id: 3, name: "Rover">
-  >> d.kennels 
+  >> d.kennels
   [#<Kennel id: 1, name: "Happy Paws">]
-  
+
   >> k.guests.delete(d); k.dogs.size
   0
   >> k.guests.size
-  5  
-  
+  5
+
 Note that the parent method is always plural, even if there is only one parent (<tt>Dog#kennels</tt>, not <tt>Dog#kennel</tt>).
 
 See ActiveRecord::Associations::PolymorphicAssociation for more helper method details.
@@ -118,14 +122,14 @@ Double-sided relationships are defined on the join model:
   class Devouring < ActiveRecord::Base
     belongs_to :guest, :polymorphic => true
     belongs_to :eaten, :polymorphic => true
-  
+
     acts_as_double_polymorphic_join(
-      :guests =>[:dogs, :cats], 
+      :guests =>[:dogs, :cats],
       :eatens => [:cats, :birds]
-    )       
+    )
   end
-  
-Now, dogs and cats can eat birds and cats. Birds can't eat anything (they aren't <tt>guests</tt>) and dogs can't be eaten by anything (since they aren't <tt>eatens</tt>). The keys stand for what the models are, not what they do. 
+
+Now, dogs and cats can eat birds and cats. Birds can't eat anything (they aren't <tt>guests</tt>) and dogs can't be eaten by anything (since they aren't <tt>eatens</tt>). The keys stand for what the models are, not what they do.
 
 In this case, each guest/eaten relationship is called a Devouring.
 
@@ -138,7 +142,7 @@ In your migration, you need to declare both sides as polymorphic:
         t.references :eaten, :polymorphic => true
       end
     end
-  
+
     def self.down
       drop_table :devourings
     end
@@ -151,9 +155,9 @@ See ActiveRecord::Associations::PolymorphicClassMethods for more.
 Has_many_polymorphs includes a tagging system generator. Run:
   script/generate tagging Dog Cat [...MoreModels...]
 
-This adds a migration and new Tag and Tagging models in <tt>app/models</tt>. It configures Tag with an appropriate <tt>has_many_polymorphs</tt> call against the models you list at the command line. It also adds the file <tt>lib/tagging_extensions.rb</tt> and <tt>requires</tt> it in <tt>environment.rb</tt>. 
+This adds a migration and new Tag and Tagging models in <tt>app/models</tt>. It configures Tag with an appropriate <tt>has_many_polymorphs</tt> call against the models you list at the command line. It also adds the file <tt>lib/tagging_extensions.rb</tt> and <tt>requires</tt> it in <tt>environment.rb</tt>.
 
-Tests will also be generated. 
+Tests will also be generated.
 
 Once you've run the generator, you can tag records as follows:
 
@@ -171,7 +175,7 @@ Once you've run the generator, you can tag records as follows:
   #<Cat id: 1, name: "Chloe">
   >> c.tag_list
   "cute fierce"
-  >> Tag.find_by_name("fierce").taggables 
+  >> Tag.find_by_name("fierce").taggables
   [#<Cat id: 1, name: "Chloe">, #<Dog id: 3, name: "Rover">]
 
 The generator accepts the optional flag <tt>--skip-migration</tt> to skip generating a migration (for example, if you are converting from <tt>acts_as_taggable</tt>). It also accepts the flag <tt>--self-referential</tt> if you want to be able to tag tags.
@@ -184,7 +188,7 @@ Some debugging tools are available in <tt>lib/has_many_polymorphs/debugging_tool
 
 If you are having trouble, think very carefully about how your model classes, key columns, and table names relate. You may have to explicitly specify options on your join model such as <tt>:class_name</tt>, <tt>:foreign_key</tt>, or <tt>:as</tt>. The included tests are a good place to look for examples.
 
-Note that because of the way Rails reloads model classes, the plugin can sometimes bog down your development server. Set <tt>config.cache_classes = true</tt> in <tt>config/environments/development.rb</tt> to avoid this. 
+Note that because of the way Rails reloads model classes, the plugin can sometimes bog down your development server. Set <tt>config.cache_classes = true</tt> in <tt>config/environments/development.rb</tt> to avoid this.
 
 == Reporting problems
 
